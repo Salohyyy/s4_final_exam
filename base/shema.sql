@@ -1,3 +1,7 @@
+DROP DATABASE if exists ef;
+CREATE TABLE ef;
+use ef;
+
 -- EMPLOYES
 CREATE TABLE employe (
     id INT AUTO_INCREMENT PRIMARY KEY,
