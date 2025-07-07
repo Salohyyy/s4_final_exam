@@ -3,11 +3,14 @@ require_once __DIR__ . '/../models/Etudiant.php';
 require_once __DIR__ . '/../helpers/Utils.php';
 
 
-
 class EtudiantController {
     public static function getAll() {
         $etudiants = Etudiant::getAll();
         Flight::json($etudiants);
+    }
+    public static function test() {
+        // $etudiants = Etudiant::getAll();
+        // Flight::json($etudiants);
     }
 
     public static function getById($id) {

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/S4/s4_final_exam/code/static/css/side-bar/side-bar.css">
-    <link rel="stylesheet" href="/S4/s4_final_exam/code/static/css/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/dashboard/style.css">
     <title>Document</title>
 </head>
 <body>
@@ -24,14 +24,6 @@
                     <i class="fas fa-wallet"></i>
                     <span>Gestion des dashboard</span>
                     <i class="fas fa-chevron-down arrow"></i>
-                </div>
-                <div class="submenu" id="dashboard-menu">
-                    <div class="submenu-item" onclick="loadContent('dashboard/dashboard.html')">
-                        <i class="fas fa-plus-circle"></i> Ajouter Fond
-                    </div>
-                    <div class="submenu-item" onclick="loadContent('detail-fond')">
-                        <i class="fas fa-info-circle"></i> Détails
-                    </div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,112 @@
+// Import des variables communes (à adapter selon votre structure)
+// @import '../variables';
+
+// Variables spécifiques (si pas d'import)
+$primary-color: #1e3c72;
+$secondary-color: #2a5298;
+$accent-color: #3498db;
+$danger-color: #e74c3c;
+$success-color: #27ae60;
+$warning-color: #f39c12;
+$neutral-color: #95a5a6;
+$text-primary: #2c3e50;
+$text-secondary: #7f8c8d;
+
+
+// Section des informations de remboursement
+.info-remboursement {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+  
+  h3 {
+    color: $primary-color;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    i {
+      color: $accent-color;
+    }
+  }
+  
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    
+    .info-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      @include card-shadow;
+      @include transition();
+      border-left: 4px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      
+      @include hover-transform;
+      
+      &.montant {
+        border-left-color: $accent-color;
+      }
+      
+      &.interet {
+        border-left-color: $warning-color;
+      }
+      
+      &.penalite, &.montant-penalite {
+        border-left-color: $danger-color;
+      }
+      
+      &.total {
+        border-left-color: $success-color;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        
+        .card-value {
+          font-size: 1.3em;
+          font-weight: 700;
+          color: $success-color;
+        }
+      }
+      
+      .card-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, $accent-color 0%, $secondary-color 100%);
+        color: white;
+        font-size: 1.2em;
+        flex-shrink: 0;
+      }
+      
+      .card-content {
+        flex: 1;
+        
+        .card-label {
+          display: block;
+          font-size: 0.9em;
+          color: $text-secondary;
+          margin-bottom: 4px;
+          font-weight: 500;
+        }
+        
+        .card-value {
+          display: block;
+          font-size: 1.2em;
+          font-weight: 600;
+          color: $text-primary;
+        }
+      }
+    }
+  }
+}
