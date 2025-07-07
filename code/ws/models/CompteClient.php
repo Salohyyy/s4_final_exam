@@ -17,7 +17,7 @@ class CompteClient {
 
     public static function create($data) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO compteClient (id_client,id_compte,date,attribution) VALUES (?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO compte_client (id_client,id_compte,date,attribution) VALUES (?, ?, ?, ?)");
         $stmt->execute([
             $data->id_client,
             $data->id_compte,
