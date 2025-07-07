@@ -10,8 +10,18 @@ class CompteController {
         Flight::json($compte);
     }
 
+    public static function getById($id) {
+        $compte = Compte::getById($id);
+        Flight::json($compte);
+    }
+
     public static function getByNumero($numero) {
         $compte = Compte::getByNumero($numero);
+        Flight::json($compte);
+    }
+
+    public static function getCompteInstitutionnelle() {
+        $compte = Compte::getCompteInstitutionnelle();
         Flight::json($compte);
     }
 

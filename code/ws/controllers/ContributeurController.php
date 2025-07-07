@@ -10,6 +10,11 @@ class ContributeurController {
         Flight::json($contributeurs);
     }
 
+    public static function getById($id) {
+        $contributeur = Contributeur::getById($id);
+        Flight::json($contributeur);
+    }
+
     public static function getByLibelle($libelle) {
         $contributeur = Contributeur::getByLibelle($libelle);
         Flight::json($contributeur);

@@ -8,11 +8,26 @@ class Compte {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function getById($id) {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT * FROM compte WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function getByNumero($numero) {
         $db = getDB();
         $stmt = $db->prepare("SELECT * FROM compte WHERE numero= ?");
         $stmt->execute([$numero]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getCompteInstitutionnelle() {
+        $id_compte_type=2;
+        $db = getDB();
+        $stmt = $db->prepare("SELECT * FROM compte WHERE id_compte_type= ?");
+        $stmt->execute([$id_compte_type]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function create($data) {
