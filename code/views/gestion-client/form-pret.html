@@ -1,0 +1,95 @@
+<div class="content-header">
+    <h1 id="page-title">Insertion d’un prêt</h1>
+    <p id="page-subtitle">Ajouter un nouveau prêt</p>
+  </div>
+  
+  <div>
+    <select id="id_pret_type">
+      <option value="">-- Type de prêt --</option>
+    </select>
+  
+    <select id="id_client">
+      <option value="">-- Client --</option>
+    </select>
+  
+    <input type="number" id="montant" placeholder="Montant">
+    <input type="number" id="duree" placeholder="Durée (mois)">
+    <input type="number" id="delais" placeholder="Délai (mois)" value="1">
+    <textarea id="description" placeholder="Description du prêt"></textarea>
+    <button onclick="insererPret()">Valider</button>
+  </div>
+  
+  <script>
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+  
+    function ajax(method, url, data, callback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        }
+      };
+      xhr.send(data);
+    }
+  
+    function chargerTypesPret() {
+      ajax("GET", "/pret_types", null, (data) => {
+        const select = document.getElementById("id_pret_type");
+        data.forEach(type => {
+          const opt = document.createElement("option");
+          opt.value = type.id;
+          opt.textContent = type.description;
+          select.appendChild(opt);
+        });
+      });
+    }
+  
+    function chargerClients() {
+      ajax("GET", "/clients", null, (data) => {
+        const select = document.getElementById("id_client");
+        data.forEach(client => {
+          const opt = document.createElement("option");
+          opt.value = client.id;
+          opt.textContent = client.nom + " " + client.prenom;
+          select.appendChild(opt);
+        });
+      });
+    }
+  
+    function insererPret() {
+      const idPretType = document.getElementById("id_pret_type").value;
+      const idClient = document.getElementById("id_client").value;
+      const montant = document.getElementById("montant").value;
+      const duree = document.getElementById("duree").value;
+      const delais = document.getElementById("delais").value;
+      const description = document.getElementById("description").value;
+  
+      if (!idPretType || !idClient || !montant || !duree) {
+        alert("Veuillez remplir tous les champs obligatoires.");
+        return;
+      }
+  
+      const data = `id_pret_type=${encodeURIComponent(idPretType)}&id_client=${encodeURIComponent(idClient)}&montant=${montant}&duree=${duree}&delais=${delais}&description=${encodeURIComponent(description)}`;
+  
+      ajax("POST", "/prets", data, () => {
+        alert("Prêt inséré avec succès !");
+        resetForm();
+      });
+    }
+  
+    function resetForm() {
+      document.getElementById("id_pret_type").value = "";
+      document.getElementById("id_client").value = "";
+      document.getElementById("montant").value = "";
+      document.getElementById("duree").value = "";
+      document.getElementById("delais").value = "1";
+      document.getElementById("description").value = "";
+    }
+  
+    // Charger les données dynamiques au chargement
+    chargerTypesPret();
+    chargerClients();
+  </script>
+  

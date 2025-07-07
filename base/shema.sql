@@ -107,6 +107,7 @@ CREATE TABLE pret (
     id_client INT,
     montant DECIMAL(15,2),
     duree INT,
+    delais INT DEFAULT 1,
     description TEXT,
     FOREIGN KEY (id_pret_type) REFERENCES pret_type(id),
     FOREIGN KEY (id_client) REFERENCES client(id)

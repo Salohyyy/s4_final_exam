@@ -1,0 +1,127 @@
+<div class="content-header">
+    <h1>Remboursement d’un prêt</h1>
+  </div>
+  
+  <div id="message" style="color: red; font-weight: bold;"></div>
+  
+  <div>
+    <label>Client :</label>
+    <select id="client-select">
+      <option value="">-- Choisir un client --</option>
+    </select>
+  
+    <label>Date prévue :</label>
+    <input type="date" id="date-prevue" />
+  
+    <button onclick="chargerPrets()">Chercher les prêts</button>
+  </div>
+  
+  <div style="margin-top: 20px;">
+    <label>Prêt :</label>
+    <select id="pret-select" onchange="chargerRemboursement()">
+      <option value="">-- Choisir un prêt --</option>
+    </select>
+  </div>
+  
+  <div id="details" style="margin-top: 20px; display: none;">
+    <p><strong>Assurance :</strong> <span id="assurance"></span></p>
+    <p><strong>Amortissement :</strong> <span id="amortissement"></span></p>
+    <p><strong>Intérêt :</strong> <span id="interet"></span></p>
+    <p><strong>Pénalité :</strong> <span id="penalite"></span></p>
+  
+    <button onclick="validerRemboursement()">Valider le remboursement</button>
+  </div>
+  
+  <script>
+    const apiBase = "http://localhost/S4/tp-flightphp-crud-MVC/tp-flightphp-crud/ws";
+  
+    function ajax(method, url, data, callback, errorCallback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) callback(JSON.parse(xhr.responseText));
+          else if (errorCallback) errorCallback(xhr.responseText);
+        }
+      };
+      xhr.send(data);
+    }
+  
+    function afficherMessage(msg, color = "red") {
+      const msgBox = document.getElementById("message");
+      msgBox.style.color = color;
+      msgBox.textContent = msg;
+      setTimeout(() => msgBox.textContent = "", 4000);
+    }
+  
+    function chargerClients() {
+      ajax("GET", "/clients", null, (data) => {
+        const select = document.getElementById("client-select");
+        data.forEach(c => {
+          const opt = document.createElement("option");
+          opt.value = c.id;
+          opt.textContent = `${c.nom} ${c.prenom}`;
+          select.appendChild(opt);
+        });
+      });
+    }
+  
+    function chargerPrets() {
+      const idClient = document.getElementById("client-select").value;
+      const datePrevue = document.getElementById("date-prevue").value;
+  
+      if (!idClient || !datePrevue) {
+        afficherMessage("Veuillez sélectionner un client et une date.");
+        return;
+      }
+  
+      ajax("GET", `/remboursements/prets?id_client=${idClient}&date_prevue=${datePrevue}`, null, (data) => {
+        const select = document.getElementById("pret-select");
+        select.innerHTML = `<option value="">-- Choisir un prêt --</option>`;
+        data.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.id;
+          opt.textContent = `Prêt #${p.id} - Montant: ${p.montant}`;
+          select.appendChild(opt);
+        });
+      });
+    }
+  
+    function chargerRemboursement() {
+      const idPret = document.getElementById("pret-select").value;
+      if (!idPret) return;
+  
+      ajax("GET", `/remboursements/details?id_pret=${idPret}`, null, (data) => {
+        document.getElementById("assurance").textContent = data.assurance;
+        document.getElementById("amortissement").textContent = data.amortissement;
+        document.getElementById("interet").textContent = data.interet;
+        document.getElementById("penalite").textContent = data.montant_penalite;
+        document.getElementById("details").style.display = "block";
+      }, () => {
+        afficherMessage("Erreur lors du chargement des informations de remboursement.");
+      });
+    }
+  
+    function validerRemboursement() {
+      const idPret = document.getElementById("pret-select").value;
+      const date = new Date().toISOString().split("T")[0];
+  
+      if (!idPret) {
+        afficherMessage("Aucun prêt sélectionné.");
+        return;
+      }
+  
+      const data = `id_pret=${idPret}&date_remboursement=${date}`;
+      ajax("PUT", "/remboursements/valider", data, () => {
+        afficherMessage("Remboursement validé ✅", "green");
+        document.getElementById("details").style.display = "none";
+        document.getElementById("pret-select").innerHTML = `<option value="">-- Choisir un prêt --</option>`;
+      }, () => {
+        afficherMessage("Erreur lors de la validation.");
+      });
+    }
+  
+    chargerClients();
+  </script>
+  
