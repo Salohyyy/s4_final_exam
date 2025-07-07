@@ -26,4 +26,22 @@ class CompteMouvement {
             $data->montant]);
         return $db->lastInsertId();
     }
+
+    //pas necessaire mais peut servir
+    /*public static function update($id, $data) {
+        $db = getDB();
+        $stmt = $db->prepare("UPDATE compte_mouvement SET nom = ?, prenom = ?, email = ?, age = ? WHERE id = ?");
+        $stmt->execute([
+            $data->id_compte_type_mouvement,
+            $data->id_compte,
+            $data->id_contributeur,
+            $data->date_mouvement,
+            $data->montant, $id]);
+    }
+
+    public static function delete($id) {
+        $db = getDB();
+        $stmt = $db->prepare("DELETE FROM compte_mouvement WHERE id = ?");
+        $stmt->execute([$id]);
+    }*/
 }
