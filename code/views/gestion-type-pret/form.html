@@ -1,0 +1,81 @@
+
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+
+  <h1>Gestion de type de prêt</h1>
+
+  <div>
+    <input type="hidden" id="id">
+    <input type="text" id="description" placeholder="Description">
+    <input type="text" id="but" placeholder="But">
+    <button onclick="ajouterOuModifier()">Ajouter / Modifier</button>
+  </div>
+
+  
+
+  <script>
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+     //const apiBase = "http://localhost:8888/code/ws";
+    function ajax(method, url, data, callback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        }
+      };
+      xhr.send(data);
+    }
+
+    function ajouterOuModifier() {
+  const description = document.getElementById("description").value;
+  const but = document.getElementById("but").value;
+  const id = document.getElementById("id").value;
+
+  const data = `description=${encodeURIComponent(description)}&but=${encodeURIComponent(but)}`;
+
+  /*if (id) {
+    ajax("PUT", `/pretType/${id}`, data, () => {
+      resetForm();
+      chargerPretType();
+    });
+  } else {*/
+    ajax("POST", "/pretType", data, (response) => {
+      // Rediriger vers pretCaracteristique.html avec id_pret_type dans l’URL
+      if (response.id) {
+        window.location.href = `caracteristiques.html?id_pret_type=${response.id}`;
+      } else {
+        alert("Erreur : ID du type de prêt non retourné.");
+      }
+    });
+  }
+//}
+
+
+
+    function remplirFormulaire(tp) {
+      document.getElementById("description").value = tp.description;
+      document.getElementById("but").value = tp.but;
+    }
+
+    /*function supprimerPretType(id) {
+      if (confirm("Supprimer ce type de prêt ?")) {
+        ajax("DELETE", `/pretType/${id}`, null, () => {
+          chargerPretType();
+        });
+      }
+    }*/
+
+    function resetForm() {
+      document.getElementById("description").value = "";
+      document.getElementById("but").value = "";
+    }
+
+    
+  </script>

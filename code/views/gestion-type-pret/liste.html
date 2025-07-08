@@ -1,0 +1,43 @@
+<table id="table-pretType">
+    <thead>
+      <tr>
+        <th>Description</th><th>But</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+    function ajax(method, url, data, callback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        }
+      };
+      xhr.send(data);
+    }
+
+    function chargerPretType() {
+      ajax("GET", "/pretType", null, (data) => {
+        const tbody = document.querySelector("#table-pretType tbody");
+        tbody.innerHTML = "";
+        data.forEach(tp => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${tp.description}</td>
+            <td>${tp.but}</td>
+            <td>
+              <button onclick='remplirFormulaire(${JSON.stringify(tp)})'>✏️</button>
+              <button onclick='supprimerPretType(${tp.id})'>🗑️</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+    chargerPretType();
+</script>
