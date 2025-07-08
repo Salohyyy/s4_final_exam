@@ -11,24 +11,35 @@
     <select id="id_client">
       <option value="">-- Client --</option>
     </select>
-  
-    <input type="number" id="montant" placeholder="Montant">
-    <input type="number" id="duree" placeholder="Durée (mois)">
+
+    <input type="number" id="annee" placeholder="... ans">
+    <input type="number" id="mois" placeholder="et ... mois">
     <input type="number" id="delais" placeholder="Délai (mois)" value="1">
+    
+    <input type="number" id="montant" placeholder="Montant">
+
     <textarea id="description" placeholder="Description du prêt"></textarea>
+    
     <button onclick="insererPret()">Valider</button>
   </div>
   
   <script>
     const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-  
+    console.log("JavaScript chargé");
     function ajax(method, url, data, callback) {
       const xhr = new XMLHttpRequest();
       xhr.open(method, apiBase + url, true);
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          callback(JSON.parse(xhr.responseText));
+        if (xhr.readyState === 4) {
+          console.log("🟡 Réponse brute :", xhr.responseText); // 👈 VOIR ICI
+          try {
+            const json = JSON.parse(xhr.responseText);
+            callback(json);
+          } catch (err) {
+            console.error("❌ JSON.parse a échoué :", err);
+            alert("Une erreur est survenue :\n" + xhr.responseText); // ou afficher dans une div
+          }
         }
       };
       xhr.send(data);
@@ -48,6 +59,7 @@
   
     function chargerClients() {
       ajax("GET", "/clients", null, (data) => {
+        console.log("Clients:", data);
         const select = document.getElementById("id_client");
         data.forEach(client => {
           const opt = document.createElement("option");
@@ -62,7 +74,9 @@
       const idPretType = document.getElementById("id_pret_type").value;
       const idClient = document.getElementById("id_client").value;
       const montant = document.getElementById("montant").value;
-      const duree = document.getElementById("duree").value;
+      const annees = parseInt(document.getElementById("annee").value) || 0;
+      const mois = parseInt(document.getElementById("mois").value) || 0;
+      const duree = annees * 12 + mois;
       const delais = document.getElementById("delais").value;
       const description = document.getElementById("description").value;
   
@@ -83,7 +97,8 @@
       document.getElementById("id_pret_type").value = "";
       document.getElementById("id_client").value = "";
       document.getElementById("montant").value = "";
-      document.getElementById("duree").value = "";
+      document.getElementById("annee").value = "0";
+      document.getElementById("mois").value = "0";
       document.getElementById("delais").value = "1";
       document.getElementById("description").value = "";
     }
