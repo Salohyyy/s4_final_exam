@@ -29,7 +29,7 @@ class Pret {
                 GROUP BY id_pret
             ) pe_max ON pe_max.id_pret = p.id
             JOIN pret_etat pe ON pe.id_pret = p.id AND pe.date_etat = pe_max.last_date
-            WHERE pe.id_pret_statut = 1 and pe.id_pret_statut = 4
+            WHERE pe.id_pret_statut = 1 or pe.id_pret_statut = 4
         ";
         return $db->query($sql)->fetchAll();
     }
