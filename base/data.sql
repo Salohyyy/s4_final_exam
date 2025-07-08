@@ -51,7 +51,7 @@ INSERT INTO pret (id_pret_type, id_client, montant, duree, description) VALUES
 (1, 1, 200000, 12, 'Achat moto'),
 (2, 2, 3000000, 48, 'Maison Antananarivo');
 
-INSERT INTO pret_statut (libelle) VALUES ('en attente'), ('valide'), ('rembourse');
+INSERT INTO pret_statut (libelle) VALUES ('en attente'), ('valide'), ('refuse'), ('rembourse');
 
 INSERT INTO pret_etat (id_pret, id_pret_statut, date_etat, id_employe) VALUES
 (1, 1, '2024-05-01', 1),
@@ -62,3 +62,4 @@ INSERT INTO compte_seuil (pourcentage, date_modif) VALUES (10., '2024-01-01');
 INSERT INTO tva (taux, date_modif) VALUES (20.0, '2024-01-01');
 INSERT INTO penalite (pourcentage, date_modif) VALUES (1.0, '2024-01-01');
 INSERT INTO assurance (pourcentage, date_modif) VALUES (1.0, '2024-01-01');
+INSERT INTO delais_max (date_modif) VALUES ('2024-01-01');
