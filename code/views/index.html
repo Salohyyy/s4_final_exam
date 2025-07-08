@@ -36,7 +36,7 @@
                         <i class="fas fa-info-circle"></i> remboursement pret
                     </div>
                     <div class="submenu-item" onclick="loadContent('gestion-client/pret-attente.html')">
-                        <i class="fas fa-info-circle"></i> prent en attente validation
+                        <i class="fas fa-info-circle"></i> pret en attente validation
                     </div>
                 </div>
 
@@ -64,6 +64,7 @@
 
     <script src="../static/js/encaisse-decaisse.js"></script>
     <script>
+        
         function toggleSubmenu(menuId) {
             const submenu = document.getElementById(menuId);
             const arrow = submenu.previousElementSibling.querySelector('.arrow');
@@ -96,18 +97,25 @@
               // 👉 On attend que le HTML soit chargé pour attacher les événements
               if (page.includes("encaisse-decaisse.html")) {
                 chargerClients();
-            
                 // on attend que le DOM soit prêt
                 setTimeout(() => {
                   document.getElementById("client-select")?.addEventListener("change", chargerComptes);
                   document.querySelector("button.btn.btn-primary")?.addEventListener("click", insererMouvement);
                 }, 100);
+
+                // Extraire et exécuter tous les <script> du HTML
+                const scripts = container.querySelectorAll("script");
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    if (oldScript.src) {
+                        newScript.src = oldScript.src;
+                    } else {
+                        newScript.textContent = oldScript.textContent;
+                    }
+                    document.body.appendChild(newScript);
+                });
               }
             })
-            .catch(error => {
-              console.error(error);
-              document.querySelector('.content').innerHTML = "<p style='color:red;'>Erreur de chargement du contenu.</p>";
-            });
         }
     </script>
 </body>
