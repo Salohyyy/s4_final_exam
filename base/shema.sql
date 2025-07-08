@@ -52,7 +52,7 @@ CREATE TABLE compte_client (
     id_client INT,
     id_compte INT,
     date DATE,
-    attribution BOOLEAN,    
+    attribution BOOLEAN,
     FOREIGN KEY (id_client) REFERENCES client(id),
     FOREIGN KEY (id_compte) REFERENCES compte(id)
 );
@@ -129,13 +129,24 @@ CREATE TABLE pret_etat (
     FOREIGN KEY (id_employe) REFERENCES employe(id)
 );
 
+-- CREATE TABLE remboursement_pret (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     id_pret INT,
+--     assurance DECIMAL(15,2),
+--     amortissement DECIMAL(15,2),
+--     date_prevue DATE,
+--     interet DECIMAL(10,2),
+--     date_remboursement DATE,
+--     montant_penalite DECIMAL(10,2),
+--     FOREIGN KEY (id_pret) REFERENCES pret(id)
+-- );
 CREATE TABLE remboursement_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT,
     assurance DECIMAL(15,2),
-    amortissement DECIMAL(15,2),
-    date_prevue DATE,
     interet DECIMAL(10,2),
+    annuite DECIMAL(15,2),
+    date_prevue DATE,
     date_remboursement DATE,
     montant_penalite DECIMAL(10,2),
     FOREIGN KEY (id_pret) REFERENCES pret(id)
@@ -168,6 +179,6 @@ CREATE TABLE penalite (
 
 CREATE TABLE delais_max (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    int DECIMAL(5,2),
+    mois INT DEFAULT 1,
     date_modif DATE
 );
