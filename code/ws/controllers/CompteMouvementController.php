@@ -15,6 +15,11 @@ class CompteMouvementController {
         Flight::json($compteMouvement);
     }
 
+    public static function getInvestissement() {
+        $compteMouvements = CompteMouvement::getInvestissement();
+        Flight::json($compteMouvements);
+    }
+
     public static function create() {
         $data = Flight::request()->data;
         //$data->date_mouvement = Utils::formatDate($data->date_mouvement);
