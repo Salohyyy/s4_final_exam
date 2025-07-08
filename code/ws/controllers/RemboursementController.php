@@ -43,4 +43,31 @@ class RemboursementController {
         $success = RemboursementModel::validerRemboursement($idPret, $dateRem, $datePrevue);
         Flight::json(['success' => $success]);
     }
+
+    public static function exporterPDF() {
+        $idPret = Flight::request()->query['id_pret'] ?? null;
+    
+        if (!$idPret) {
+            Flight::halt(400, "ID prêt manquant");
+        }
+    
+        $pdf = RemboursementModel::genererPDF($idPret);
+    
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="echeancier.pdf"');
+        echo $pdf;
+    }
+
+    public static function getPretsClient() {
+        $idClient = Flight::request()->query['id_client'] ?? null;
+    
+        if (!$idClient) {
+            Flight::halt(400, "ID client manquant");
+        }
+    
+        $data = RemboursementModel::getPretsClient($idClient);
+        Flight::json($data);
+    }
+    
+    
 }
