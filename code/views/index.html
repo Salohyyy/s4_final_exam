@@ -35,7 +35,7 @@
                         <i class="fas fa-info-circle"></i> remboursement pret
                     </div>
                     <div class="submenu-item" onclick="loadContent('gestion-client/pret-attente.html')">
-                        <i class="fas fa-info-circle"></i> prent en attente validation
+                        <i class="fas fa-info-circle"></i> pret en attente validation
                     </div>
                 </div>
 
@@ -91,7 +91,20 @@
                     return response.text();
                 })
                 .then(html => {
-                    document.querySelector('.content').innerHTML = html;
+                    const container = document.querySelector('.content');
+                    container.innerHTML = html;
+                
+                    // Extraire et exécuter tous les <script> du HTML
+                    const scripts = container.querySelectorAll("script");
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement("script");
+                        if (oldScript.src) {
+                            newScript.src = oldScript.src;
+                        } else {
+                            newScript.textContent = oldScript.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                    });
                 })
                 .catch(error => {
                     console.error(error);
