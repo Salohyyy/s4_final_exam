@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajout de fond</title>
+  <!--<link rel="stylesheet" href="../../assets/fond.css">-->
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+  <h1>Liste des fonds</h1>
+
+  <div>
+    <input type="hidden" id="id">
+    <select id="contributeur" >
+
+    </select>
+    <select id="compte" >
+
+    </select>
+    <input type="date" id="date">
+    <input type="number" id="montant" placeholder="Montant">
+    <button onclick="ajouterFond()">Ajouter</button>
+  </div>
+
+  <table id="table-etudiants">
+    <thead>
+      <tr>
+        <th>Contributeur</th><th>Compte institutionnelle</th><th>Type de mouvement</th><th>Date de mouvement</th><th>Montant</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    //const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+    const apiBase = "http://localhost:8888/code/ws";
+
+    function ajax(method, url, data, callback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        }
+      };
+      xhr.send(data);
+    }
+
+    function chargerMouvementInvestissement() {
+      ajax("GET", "/invest", null, (data) => {
+        const tbody = document.querySelector("#table-etudiants tbody");
+        tbody.innerHTML = "";
+        data.forEach(cm => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${cm.contributeur}</td>
+            <td>${cm.compte}</td>
+            <td>${cm.description}</td>
+            <td>${cm.date_mouvement}</td>
+            <td>${cm.montant}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+
+    function chargerContributeur() {
+      ajax("GET", "/contributeur", null, (data) => {
+        const select = document.getElementById("contributeur");
+        select.innerHTML = "";
+        data.forEach(contributeur => {
+            const option = document.createElement("option");
+            option.value = contributeur.id;
+            option.textContent = contributeur.libelle;
+            select.appendChild(option);
+        });
+      });
+    }
+
+    function chargerCompteInstitutionnelle() {
+      ajax("GET", "/compte/typecompte/institutionnelle", null, (data) => {
+        const select = document.getElementById("compte");
+        select.innerHTML = "";
+        data.forEach(compte => {
+            const option = document.createElement("option");
+            option.value = compte.id;
+            option.textContent = compte.numero;
+            select.appendChild(option);
+        });
+      });
+    }
+
+    function ajouterFond() {
+      const contributeur = document.getElementById("contributeur").value;
+      const compte = document.getElementById("compte").value;
+      const montant = document.getElementById("montant").value;
+      const date_mouvement = document.getElementById("date").value;
+      const id_compte_type_mouvement=3;
+      console.log(contributeur,compte,montant,date_mouvement);
+      const data = `id_compte_type_mouvement=${encodeURIComponent(id_compte_type_mouvement)}&id_compte=${encodeURIComponent(compte)}&id_contributeur=${encodeURIComponent(contributeur)}&date_mouvement=${encodeURIComponent(date_mouvement)}&montant=${encodeURIComponent(montant)}`;
+
+      /*if (id) {
+        ajax("PUT", `/fond/${id}`, data, () => {
+          resetForm();
+          chargerContributeur();
+          chargerCompteInstitutionnelle();
+          chargerMouvementInvestissement();
+        });
+      } else {*/
+        ajax("POST", "/compteMouvement", data, () => {
+          resetForm();
+          chargerContributeur();
+          chargerCompteInstitutionnelle();
+          chargerMouvementInvestissement();
+        });
+      //}
+    }
+
+
+    function remplirFormulaire(e) {
+      document.getElementById("contributeur").value = contributeur.libelle;
+      document.getElementById("compte").value = compte.id_compte;
+      document.getElementById("montant").value = montant;
+    }
+
+    function resetForm() {
+      document.getElementById("contributeur").value = "";
+      document.getElementById("compte").value = "";
+      document.getElementById("montant").value = "";
+    }
+
+   
+    chargerContributeur();
+    chargerCompteInstitutionnelle();
+    chargerMouvementInvestissement();
+  </script>
+
+</body>
+</html>
