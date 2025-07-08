@@ -6,6 +6,23 @@
 
             <div class="menu-section">
                 <div class="menu-title">
+                    <i class="fas fa-piggy-bank"></i> test
+                </div>
+                <div class="menu-item" onclick="toggleSubmenu('test-menu')">
+                    <i class="fas fa-wallet"></i>
+                    <span>Test</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu" id="test-menu">
+                    <div class="submenu-item" onclick="loadContent('ajouter-fond')">
+                        <i class="fas fa-plus-circle"></i> 
+                        <a href="/test">Ajouter Fond</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">
                     <i class="fas fa-piggy-bank"></i> Fonds
                 </div>
                 <div class="menu-item" onclick="toggleSubmenu('fonds-menu')">

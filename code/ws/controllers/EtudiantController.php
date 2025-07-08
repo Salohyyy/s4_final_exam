@@ -8,6 +8,10 @@ class EtudiantController {
         $etudiants = Etudiant::getAll();
         Flight::json($etudiants);
     }
+    public static function test() {
+        // $etudiants = Etudiant::getAll();
+        // Flight::json($etudiants);
+    }
 
     public static function getById($id) {
         $etudiant = Etudiant::getById($id);

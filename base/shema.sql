@@ -140,7 +140,7 @@ CREATE TABLE remboursement_pret (
     FOREIGN KEY (id_pret) REFERENCES pret(id)
 );
 
--- SEUIL, TVA, PENALITE
+-- SEUIL, TVA, PENALITE, ASSURANCE
 CREATE TABLE compte_seuil (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pourcentage DECIMAL(5,2),

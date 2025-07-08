@@ -101,7 +101,7 @@
         });
       }
     }
-
+    
     function resetForm() {
       document.getElementById("id").value = "";
       document.getElementById("nom").value = "";
@@ -115,3 +115,4 @@
 
 </body>
 </html>
+<a href=""></a>
