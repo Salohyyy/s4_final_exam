@@ -144,6 +144,7 @@ CREATE TABLE remboursement_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT,
     assurance DECIMAL(15,2),
+    interet DECIMAL(10,2),
     annuite DECIMAL(15,2),
     date_prevue DATE,
     date_remboursement DATE,
