@@ -10,6 +10,7 @@
 require_once __DIR__ . '/../controllers/ClientController.php';
 require_once __DIR__ . '/../controllers/CompteClientController.php';
 require_once __DIR__ . '/../controllers/CompteTypeMouvementController.php';
+require_once __DIR__ . '/../controllers/CompteTypeMouvementController.php';
 
 Flight::route('GET /clients', ['ClientController', 'getAll']);
 
