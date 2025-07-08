@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des fonds</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .card { 
+      border: 1px solid #ccc; 
+      border-radius: 5px; 
+      padding: 15px; 
+      margin: 10px 0; 
+      background-color: #f9f9f9;
+    }
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      padding: 8px;
+      background-color: white;
+      border-radius: 4px;
+    }
+    .stat-label {
+      font-weight: bold;
+    }
+    .stat-value {
+      color: #2c3e50;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    .refresh-btn {
+      padding: 8px 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .refresh-btn:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Gestion des fonds</h1>
+
+  <div class="card">
+    <h2>Statistiques financières</h2>
+    <div id="stats-container">
+      <div class="stat-item">
+        <span class="stat-label">Encaissements clients:</span>
+        <span class="stat-value" id="encaissements">Chargement...</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Montant prêtable (90%):</span>
+        <span class="stat-value" id="pretable">Chargement...</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Investissements:</span>
+        <span class="stat-value" id="investissements">Chargement...</span>
+      </div>
+      <div class="stat-item" style="border-top: 1px solid #ccc; margin-top: 15px; padding-top: 15px;">
+        <span class="stat-label">Total des fonds disponibles:</span>
+        <span class="stat-value" id="total-fonds" style="font-weight: bold; color: #27ae60;">Chargement...</span>
+      </div>
+    </div>
+    <button class="refresh-btn" onclick="chargerStats()">Actualiser</button>
+  </div>
+
+  <script>
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+    //const apiBase = "http://localhost:8888/code/ws"; // Adaptez cette URL selon votre configuration
+
+    function ajax(method, url, data, callback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        }
+      };
+      xhr.send(data);
+    }
+
+    function chargerStats() {
+      ajax("GET", "/fond/stats", null, (data) => {
+        document.getElementById("encaissements").textContent = data.encaissements_clients;
+        document.getElementById("pretable").textContent = data.montant_pretable;
+        document.getElementById("investissements").textContent = data.investissements;
+        document.getElementById("total-fonds").textContent = data.total_fonds;
+        console.log(data.somme_encaissements_clients, data.montant_pretable,data.somme_autres_fonds);
+      });
+      
+    }
+
+    // Charger les stats au démarrage
+    chargerStats();
+  </script>
+
+</body>
+</html>

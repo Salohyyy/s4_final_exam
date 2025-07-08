@@ -32,8 +32,8 @@
   </table>
 
   <script>
-    //const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-     const apiBase = "http://localhost:8888/code/ws";
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+     //const apiBase = "http://localhost:8888/code/ws";
     function ajax(method, url, data, callback) {
       const xhr = new XMLHttpRequest();
       xhr.open(method, apiBase + url, true);
@@ -66,25 +66,32 @@
     }
 
     function ajouterOuModifier() {
-      const description = document.getElementById("description").value;
-      const but = document.getElementById("but").value;
+  const description = document.getElementById("description").value;
+  const but = document.getElementById("but").value;
+  const id = document.getElementById("id").value;
 
-      const data = `description=${encodeURIComponent(description)}&but=${encodeURIComponent(but)}`;
+  const data = `description=${encodeURIComponent(description)}&but=${encodeURIComponent(but)}`;
 
-      if (id) {
-        ajax("PUT", `/pretType/${id}`, data, () => {
-          resetForm();
-          chargerPretType();
-        });
+  /*if (id) {
+    ajax("PUT", `/pretType/${id}`, data, () => {
+      resetForm();
+      chargerPretType();
+    });
+  } else {*/
+    ajax("POST", "/pretType", data, (response) => {
+      // Rediriger vers pretCaracteristique.html avec id_pret_type dans l’URL
+      if (response.id) {
+        window.location.href = `caracteristiques.html?id_pret_type=${response.id}`;
       } else {
-        ajax("POST", "/pretType", data, () => {
-          resetForm();
-          chargerPretType();
-        });
+        alert("Erreur : ID du type de prêt non retourné.");
       }
-    }
+    });
+  }
+//}
 
-    function remplirFormulaire(e) {
+
+
+    function remplirFormulaire(tp) {
       document.getElementById("description").value = tp.description;
       document.getElementById("but").value = tp.but;
     }

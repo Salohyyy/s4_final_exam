@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Caractéristiques des prêts</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, select, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+  <h1>Caractéristiques des types de prêts</h1>
+
+  <div>
+    <select id="pretTypeSelect"></select><br>
+    <input type="number" id="montant_min" placeholder="Montant minimum">
+    <input type="number" id="montant_max" placeholder="Montant maximum"><br>
+    <input type="number" id="duree_min" placeholder="Durée minimum (mois)">
+    <input type="number" id="duree_max" placeholder="Durée maximum (mois)"><br>
+    <input type="number" step="0.01" id="taux_interet" placeholder="Taux d'intérêt (%)"><br>
+    <button onclick="ajouterCaracteristique()">Ajouter caractéristique</button>
+  </div>
+
+  <table id="table-caracteristiques">
+    <thead>
+      <tr>
+        <th>Type de prêt</th>
+        <th>Montant min</th>
+        <th>Montant max</th>
+        <th>Durée min</th>
+        <th>Durée max</th>
+        <th>Taux (%)</th>
+        <th>Date modif</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    function getParamURL(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+    //const apiBase = "http://localhost:8888/code/ws"; // adapter si besoin
+
+    function ajax(method, url, data, callback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          callback(JSON.parse(xhr.responseText));
+        }
+      };
+      xhr.send(data);
+    }
+
+    function chargerPretTypes() {
+  ajax("GET", "/pretType", null, (data) => {
+    const select = document.getElementById("pretTypeSelect");
+    select.innerHTML = "";
+
+    const selectedId = getParamURL("id_pret_type");
+
+    data.forEach(pt => {
+      const option = document.createElement("option");
+      option.value = pt.id;
+      option.textContent = pt.description + " - " + pt.but;
+      if (selectedId && pt.id == selectedId) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+  });
+}
+
+
+    function chargerCaracteristiques() {
+      ajax("GET", "/pretCaracteristique", null, (data) => {
+        const tbody = document.querySelector("#table-caracteristiques tbody");
+        tbody.innerHTML = "";
+        data.forEach(c => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${c.pret_type_description || 'N/A'}</td>
+            <td>${c.montant_min}</td>
+            <td>${c.montant_max}</td>
+            <td>${c.duree_min}</td>
+            <td>${c.duree_max}</td>
+            <td>${c.taux_interet}</td>
+            <td>${c.date_modif}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+
+    function ajouterCaracteristique() {
+      const id_pret_type = document.getElementById("pretTypeSelect").value;
+      const montant_min = document.getElementById("montant_min").value;
+      const montant_max = document.getElementById("montant_max").value;
+      const duree_min = document.getElementById("duree_min").value;
+      const duree_max = document.getElementById("duree_max").value;
+      const taux_interet = document.getElementById("taux_interet").value;
+
+      const data = `id_pret_type=${id_pret_type}&montant_min=${montant_min}&montant_max=${montant_max}&duree_min=${duree_min}&duree_max=${duree_max}&taux_interet=${taux_interet}`;
+      
+      ajax("POST", "/pretCaracteristique", data, () => {
+        resetForm();
+        chargerCaracteristiques();
+      });
+    }
+
+    function resetForm() {
+      document.getElementById("montant_min").value = "";
+      document.getElementById("montant_max").value = "";
+      document.getElementById("duree_min").value = "";
+      document.getElementById("duree_max").value = "";
+      document.getElementById("taux_interet").value = "";
+    }
+
+    chargerPretTypes();
+    chargerCaracteristiques();
+  </script>
+
+</body>
+</html>
