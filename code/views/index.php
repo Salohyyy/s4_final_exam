@@ -3,29 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/dashboard/style.css">
+    <link rel="stylesheet" href="../static/css/index.css">
     <title>Document</title>
 </head>
 <body>
     <div class="container">
 
         <div class="side-bar">
+
             <div class="sidebar-header">
-                <h2><i class="fas fa-university"></i> Test</h2>
-                <p>Dashboard</p>
+                <h2><i class="fas fa-university"></i> FinaceApp</h2>
+                <p>ef</p>
             </div>
 
             <div class="menu-section">
                 <div class="menu-title">
-                    <i class="fas fa-piggy-bank"></i> Test dashboard
+                    <i class="fas fa-piggy-bank"></i> Fonds
                 </div>
-                <div class="menu-item" onclick="toggleSubmenu('dashboard-menu')">
+                <div class="menu-item" onclick="toggleSubmenu('fond-menu')">
                     <i class="fas fa-wallet"></i>
-                    <span>Gestion des dashboard</span>
+                    <span>gestion des fond</span>
                     <i class="fas fa-chevron-down arrow"></i>
                 </div>
+                <div class="submenu" id="fond-menu">
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-plus-circle"></i> ajout
+                    </div>
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-info-circle"></i> detail
+                    </div>
+                </div>
+                </div>
+                <div class="menu-item" onclick="toggleSubmenu('-menu')">
+                    <i class="fas fa-wallet"></i>
+                    <span>interet</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu" id="-menu">
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-plus-circle"></i> courbe
+                    </div>
+                </div>
             </div>
+
         </div>
 
         <div class="content">
