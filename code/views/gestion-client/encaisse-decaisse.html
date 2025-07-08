@@ -34,7 +34,10 @@
   </div>
   
   <script>
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+    (() => {
+       if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
     const id_contributeur = 1; // Par exemple, un employé enregistré
   
     function ajax(method, url, data, callback, errorCallback) {
@@ -71,15 +74,16 @@
   
     function chargerComptes() {
       const idClient = document.getElementById("client-select").value;
+      console.log(idClient);
       if (!idClient) return;
   
-      ajax("GET", `/comptes?id_client=${idClient}`, null, (data) => {
+      ajax("GET", `/compte/${idClient}`, null, (data) => {
         const select = document.getElementById("compte-select");
         select.innerHTML = '<option value="">-- Sélectionner un compte --</option>';
         data.forEach(compte => {
           const opt = document.createElement("option");
           opt.value = compte.id;
-          opt.textContent = `Compte #${compte.id} - Solde: ${compte.solde} Ar`;
+          opt.textContent = `${compte.numero} `;
           select.appendChild(opt);
         });
       });
@@ -99,12 +103,12 @@
       const mouvement = typeMouvement.value; // 'encaissement' ou 'decaissement'
   
       // On récupère l'id du type de mouvement (1 = encaissement, 2 = décaissement)
-      const urlType = `/type_mouvement?entree=${mouvement === "encaissement" ? 1 : 0}`;
+      const urlType = `/compteTypeMouvement/description/${mouvement === "encaissement" ? "encaissement" : "decaissement"}`;
       ajax("GET", urlType, null, (typeData) => {
         const idType = typeData.id;
         const data = `id_compte_type_mouvement=${idType}&id_compte=${idCompte}&id_contributeur=${id_contributeur}&date_mouvement=${new Date().toISOString().split("T")[0]}&montant=${montant}`;
   
-        ajax("POST", "/compte_mouvements", data, () => {
+        ajax("POST", "/compteMouvement", data, () => {
           afficherMessage("Mouvement inséré avec succès ✅", "green");
           document.getElementById("montant").value = "";
           document.querySelectorAll('input[name="mouvement"]').forEach(r => r.checked = false);
@@ -117,6 +121,6 @@
       });
     }
   
-    chargerClients();
+    chargerClients();})
   </script>
   

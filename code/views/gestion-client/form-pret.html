@@ -1,30 +1,84 @@
-    <div class="content-header">
-    <h1 id="page-title">Insertion d’un prêt</h1>
-    <p id="page-subtitle">Ajouter un nouveau prêt</p>
-  </div>
-  
-  <div>
-    <select id="id_pret_type">
-      <option value="">-- Type de prêt --</option>
-    </select>
-  
-    <select id="id_client">
-      <option value="">-- Client --</option>
-    </select>
+<div class="form">
+    <div class="form-card">
+      <div class="card-header">
+            <h1><i class="fas fa-hand-holding-usd"></i> Insertion d'un prêt</h1>
+            <p>Ajouter un nouveau prêt</p>
+      </div>
+        <form>
+            <div id="message" class="message-box"></div>
 
-    <input type="number" id="annee" placeholder="... ans">
-    <input type="number" id="mois" placeholder="et ... mois">
-    <input type="number" id="delais" placeholder="Délai (mois)" value="1">
-      
-    <input type="number" id="montant" placeholder="Montant">
+            <div class="form-section">
+                <div class="form-group">
+                    <label><i class="fas fa-tags"></i> Type de prêt :</label>
+                    <div class="input-container">
+                        <select id="id_pret_type" required>
+                            <option value="">-- Sélectionner un type de prêt --</option>
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
 
-    <textarea id="description" placeholder="Description du prêt"></textarea>
-    
-    <button onclick="insererPret()">Valider</button>
-  </div>
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Client :</label>
+                    <div class="input-container">
+                        <select id="id_client" required>
+                            <option value="">-- Sélectionner un client --</option>
+                        </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-alt"></i> Durée :</label>
+                        <div class="duration-inputs">
+                            <div class="input-container">
+                                <input type="number" id="annee" placeholder="Années" min="0">
+                            </div>
+                            <span class="duration-separator">et</span>
+                            <div class="input-container">
+                                <input type="number" id="mois" placeholder="Mois" min="0" max="11">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Délai (mois) :</label>
+                        <div class="input-container">
+                            <input type="number" id="delais" placeholder="Délai en mois" value="1" min="1" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-money-bill-wave"></i> Montant :</label>
+                    <div class="input-container">
+                        <input type="number" id="montant" placeholder="Montant du prêt" required>
+                        <span class="input-icon">Ar</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Description :</label>
+                    <div class="input-container">
+                        <textarea id="description" placeholder="Description du prêt" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" onclick="insererPret()">
+                        <i class="fas fa-check-circle"></i> Valider la demande
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
   
   <script>
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+       if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
     console.log("JavaScript chargé");
     function ajax(method, url, data, callback) {
       const xhr = new XMLHttpRequest();

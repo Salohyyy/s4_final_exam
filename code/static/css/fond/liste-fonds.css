@@ -1,0 +1,89 @@
+/* Styles spécifiques à la gestion des fonds */
+
+/* Table styles */
+.table-container {
+  margin-top: 30px;
+  overflow-x: auto;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.styled-table thead tr {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table th {
+  font-weight: 600;
+}
+
+.styled-table th i {
+  margin-right: 8px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #e1e8ed;
+  transition: all 0.3s ease;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f8f9fa;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #1e3c72;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f8fe;
+}
+
+.montant-positif {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.montant-negatif {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* Form section header */
+.form-section h3 {
+  color: #1e3c72;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .styled-table {
+    font-size: 0.8em;
+  }
+  
+  .styled-table th,
+  .styled-table td {
+    padding: 8px 10px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+}

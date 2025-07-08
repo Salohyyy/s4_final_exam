@@ -1,35 +1,77 @@
-<style>
-  body { font-family: sans-serif; padding: 20px; }
-  input, button, select { margin: 5px; padding: 5px; }
-  table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-  th { background-color: #f2f2f2; }
-</style>
-
-<h1>Liste des fonds</h1>
-
-<div>
-  <input type="hidden" id="id">
-  <select id="contributeur"></select>
-  <select id="compte"></select>
-  <input type="date" id="date">
-  <input type="number" id="montant" placeholder="Montant">
-  <button onclick="ajouterFond()">Ajouter</button>
+<div class="content-header">
+  <h1><i class="fas fa-piggy-bank"></i> Gestion des fonds</h1>
+  <p>Liste et ajout de mouvements financiers</p>
 </div>
 
-<table id="table-etudiants">
-  <thead>
-    <tr>
-      <th>Contributeur</th>
-      <th>Compte institutionnelle</th>
-      <th>Type de mouvement</th>
-      <th>Date de mouvement</th>
-      <th>Montant</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<div class="form">
+  <div class="form-card">
+    <div id="message" class="message-box"></div>
 
+    <div class="form-section">
+      <h3><i class="fas fa-plus-circle"></i> Ajouter un mouvement</h3>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fas fa-user-tie"></i> Contributeur :</label>
+          <div class="input-container">
+            <select id="contributeur" required>
+              <option value="">-- Sélectionner un contributeur --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-university"></i> Compte :</label>
+          <div class="input-container">
+            <select id="compte" required>
+              <option value="">-- Sélectionner un compte --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fas fa-calendar-day"></i> Date :</label>
+          <div class="input-container">
+            <input type="date" id="date" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-money-bill-wave"></i> Montant :</label>
+          <div class="input-container">
+            <input type="number" id="montant" placeholder="Montant" required>
+            <span class="input-icon">Ar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-primary" onclick="ajouterFond()">
+          <i class="fas fa-save"></i> Enregistrer
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="table-etudiants" class="styled-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-user-tie"></i> Contributeur</th>
+            <th><i class="fas fa-university"></i> Compte</th>
+            <th><i class="fas fa-exchange-alt"></i> Type</th>
+            <th><i class="fas fa-calendar"></i> Date</th>
+            <th><i class="fas fa-coins"></i> Montant</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 <script>
 // Vérifie si l'API est déjà déclarée
 if (typeof apiBase === 'undefined') {

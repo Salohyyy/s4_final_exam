@@ -1,0 +1,111 @@
+/* Styles spécifiques à la liste des prêts en attente */
+
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.styled-table thead tr {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+.styled-table th {
+  font-weight: 600;
+}
+
+.styled-table th i {
+  margin-right: 8px;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #e1e8ed;
+  transition: all 0.3s ease;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f8f9fa;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #1e3c72;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f8fe;
+  transform: translateX(5px);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-table {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-accept {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-reject {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-table:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn-table:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .styled-table {
+    font-size: 0.8em;
+  }
+  
+  .styled-table th,
+  .styled-table td {
+    padding: 8px 10px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .btn-table {
+    padding: 5px 8px;
+    font-size: 0.7em;
+  }
+}

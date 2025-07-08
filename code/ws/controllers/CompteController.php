@@ -43,4 +43,9 @@ class CompteController {
         Compte::delete($numero);
         Flight::json(['message' => 'Compte supprimé']);
     }*/
+
+    public static function getByClient($id_client) {
+        $compte = Compte::getByClient($id_client);
+        Flight::json($compte);
+    }
 }
