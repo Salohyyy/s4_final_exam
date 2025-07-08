@@ -15,6 +15,11 @@ class CompteTypeMouvementController {
         Flight::json($compteTypeMouvement);
     }
 
+    public static function getByDescription($description) {
+        $compteTypeMouvement = CompteTypeMouvement::getByDescription($description);
+        Flight::json($compteTypeMouvement);
+    }
+
     public static function getByEntree($entree) {
         $compteTypeMouvement = CompteTypeMouvement::getByEntree($entree);
         Flight::json($compteTypeMouvement);

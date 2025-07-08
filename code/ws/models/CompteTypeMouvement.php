@@ -22,6 +22,13 @@ class CompteTypeMouvement {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public static function getByDescription($description) {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT * FROM compte_type_mouvement WHERE description = ?");
+        $stmt->execute([$description]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function create($data) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO compte_type_mouvement (description,entree) VALUES (?, ?)");
