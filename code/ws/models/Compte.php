@@ -54,4 +54,11 @@ class Compte {
         $stmt = $db->prepare("DELETE FROM compte WHERE id = ?");
         $stmt->execute([$id]);
     }*/
+    public static function getByClient($id_client) {
+        $db = getDB();
+        $sql = "SELECT * FROM compte WHERE id_client = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id_client]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

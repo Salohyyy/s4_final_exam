@@ -165,3 +165,9 @@ CREATE TABLE penalite (
     pourcentage DECIMAL(5,2),
     date_modif DATE
 );
+
+CREATE TABLE delais_max (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    int DECIMAL(5,2),
+    date_modif DATE
+);

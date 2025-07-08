@@ -79,6 +79,7 @@ pret_etat:
 remboursement_pret:
     id_pret
     amortissement
+    assurance
     date_prevue
     interet
     date_remboursement
@@ -86,6 +87,7 @@ remboursement_pret:
 
 pret_seuil:
     pourcentage
+    date_modif
 
 tva:
     taux
@@ -93,3 +95,8 @@ tva:
 
 penalite:
     pourcentage
+    date_modif
+
+assurance: 
+    pourcentage
+    date_modif

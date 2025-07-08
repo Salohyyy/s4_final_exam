@@ -9,5 +9,6 @@ require 'routes/compte_routes.php';
 require 'routes/pretType_routes.php';
 require 'routes/pretCaracteristique_routes.php';
 require 'routes/fond_routes.php';
+require 'routes/routes.php';
 
 Flight::start();
