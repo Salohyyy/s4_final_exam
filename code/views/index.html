@@ -13,73 +13,44 @@
 
             <div class="sidebar-header">
                 <h2><i class="fas fa-university"></i> FinaceApp</h2>
-                <p>ef</p>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-title">
-                    <i class="fas fa-piggy-bank"></i> Fonds
-                </div>
-
-                <div class="menu-item" onclick="toggleSubmenu('fond-menu')">
-                    <i class="fas fa-wallet"></i>
-                    <span>gestion des fond</span>
-                    <i class="fas fa-chevron-down arrow"></i>
-                </div>
-                <div class="submenu" id="fond-menu">
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-plus-circle"></i> ajout
-                    </div>
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-info-circle"></i> detail
-                    </div>
-                </div>
-
-                </div>
-                <div class="menu-item" onclick="toggleSubmenu('-menu')">
-                    <i class="fas fa-wallet"></i>
-                    <span>interet</span>
-                    <i class="fas fa-chevron-down arrow"></i>
-                </div>
-                <div class="submenu" id="-menu">
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-plus-circle"></i> courbe
-                    </div>
-                </div>
+                <p>Gestion d'etablissement financiere</p>
             </div>
 
             <div class="menu-section">
                 <div class="menu-title">
                     <i class="fas fa-piggy-bank"></i> Gestion client
                 </div>
+
                 <div class="menu-item" onclick="toggleSubmenu('client-menu')">
+                    <i class="fas fa-wallet"></i>
+                    <span>Pret</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu" id="client-menu">
+                    <div class="submenu-item" onclick="loadContent('gestion-client/form-pret.html')">
+                        <i class="fas fa-plus-circle"></i> demande pret
+                    </div>
+                    <div class="submenu-item" onclick="loadContent('gestion-client/form-remboursementt.html')">
+                        <i class="fas fa-info-circle"></i> remboursement pret
+                    </div>
+                    <div class="submenu-item" onclick="loadContent('gestion-client/pret-attente.html')">
+                        <i class="fas fa-info-circle"></i> prent en attente validation
+                    </div>
+                </div>
+
+                <div class="menu-item" onclick="toggleSubmenu('action-menu')">
                     <i class="fas fa-wallet"></i>
                     <span>action</span>
                     <i class="fas fa-chevron-down arrow"></i>
                 </div>
-                <div class="submenu" id="fond-menu">
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-plus-circle"></i> caisse
-                    </div>
-                </div>
-                </div>
-                <div class="menu-item" onclick="toggleSubmenu('client-menu')">
-                    <i class="fas fa-wallet"></i>
-                    <span>pret</span>
-                    <i class="fas fa-chevron-down arrow"></i>
-                </div>
                 <div class="submenu" id="-menu">
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-plus-circle"></i> demande pret
-                    </div>
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-plus-circle"></i> remboursement pret
-                    </div>
-                    <div class="submenu-item" onclick="loadContent('')">
-                        <i class="fas fa-plus-circle"></i> pret en attente de validation
+                    <div class="submenu-item" onclick="loadContent('gestion-client/encaisse-decaisse.html')">
+                        <i class="fas fa-plus-circle"></i> encaisse/decaisse
                     </div>
                 </div>
+                
             </div>
+
 
         </div>
 

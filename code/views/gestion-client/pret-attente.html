@@ -1,0 +1,89 @@
+<div class="content-header">
+    <h1 id="page-title">Liste des prêts à valider</h1>
+  </div>
+  
+  <div id="message" style="color: red; font-weight: bold;"></div>
+  
+  <table id="table-prets" border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Client</th>
+        <th>Type</th>
+        <th>Montant</th>
+        <th>Durée</th>
+        <th>Délai</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  
+  <script>
+    const apiBase = "http://localhost/S4/tp-flightphp-crud-MVC/tp-flightphp-crud/ws";
+    const id_employe = 1; // À adapter selon l'utilisateur connecté
+  
+    function ajax(method, url, data, callback, errorCallback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            callback(JSON.parse(xhr.responseText));
+          } else {
+            if (errorCallback) errorCallback(xhr.responseText);
+          }
+        }
+      };
+      xhr.send(data);
+    }
+  
+    function chargerPretsNonValides() {
+      ajax("GET", "/prets/non_valides", null, (data) => {
+        const tbody = document.querySelector("#table-prets tbody");
+        tbody.innerHTML = "";
+        data.forEach(pret => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${pret.id}</td>
+            <td>${pret.client_nom} ${pret.client_prenom}</td>
+            <td>${pret.type_description}</td>
+            <td>${pret.montant}</td>
+            <td>${pret.duree}</td>
+            <td>${pret.delais}</td>
+            <td>${pret.description}</td>
+            <td>
+              <button onclick="changerStatut(${pret.id}, 2)">Valider</button>
+              <button onclick="changerStatut(${pret.id}, 3)">Annuler</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }, (err) => {
+        afficherMessage("Erreur lors du chargement des prêts.");
+      });
+    }
+  
+    function changerStatut(idPret, idStatut) {
+      const data = `id_pret=${idPret}&id_pret_statut=${idStatut}&id_employe=${id_employe}&date_etat=${new Date().toISOString().split("T")[0]}`;
+  
+      ajax("POST", "/pret_etats", data, () => {
+        afficherMessage("Opération réussie ✅", "green");
+        chargerPretsNonValides();
+      }, (err) => {
+        afficherMessage("Erreur lors de la mise à jour du prêt ❌");
+      });
+    }
+  
+    function afficherMessage(msg, color = "red") {
+      const msgBox = document.getElementById("message");
+      msgBox.style.color = color;
+      msgBox.textContent = msg;
+      setTimeout(() => msgBox.textContent = "", 4000);
+    }
+  
+    chargerPretsNonValides();
+  </script>
+  
