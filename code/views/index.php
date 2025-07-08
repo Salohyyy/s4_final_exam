@@ -1,118 +1,85 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Gestion des étudiants</title>
- <link rel="stylesheet" href="../assets/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/S4/s4_final_exam/code/static/css/side-bar/side-bar.css">
+    <link rel="stylesheet" href="/S4/s4_final_exam/code/static/css/style.css">
+    <title>Document</title>
 </head>
 <body>
+    <div class="container">
 
-  <h1>Gestion des étudiants</h1>
+        <div class="side-bar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-university"></i> Test</h2>
+                <p>Dashboard</p>
+            </div>
 
-  <div>
-    <input type="hidden" id="id">
-    <input type="text" id="nom" placeholder="Nom">
-    <input type="text" id="prenom" placeholder="Prénom">
-    <input type="email" id="email" placeholder="Email">
-    <input type="number" id="age" placeholder="Âge">
-    <button onclick="ajouterOuModifier()">Ajouter / Modifier</button>
-  </div>
+            <div class="menu-section">
+                <div class="menu-title">
+                    <i class="fas fa-piggy-bank"></i> Test dashboard
+                </div>
+                <div class="menu-item" onclick="toggleSubmenu('dashboard-menu')">
+                    <i class="fas fa-wallet"></i>
+                    <span>Gestion des dashboard</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu" id="dashboard-menu">
+                    <div class="submenu-item" onclick="loadContent('dashboard/dashboard.html')">
+                        <i class="fas fa-plus-circle"></i> Ajouter Fond
+                    </div>
+                    <div class="submenu-item" onclick="loadContent('detail-fond')">
+                        <i class="fas fa-info-circle"></i> Détails
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <table id="table-etudiants">
-    <thead>
-      <tr>
-        <th>ID</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Âge</th><th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+        <div class="content">
+            
+        </div>
+    </div>
 
-  <script>
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-
-    function ajax(method, url, data, callback) {
-      const xhr = new XMLHttpRequest();
-      xhr.open(method, apiBase + url, true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          callback(JSON.parse(xhr.responseText));
+    <script>
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId);
+            const arrow = submenu.previousElementSibling.querySelector('.arrow');
+            
+            // Close all other submenus
+            document.querySelectorAll('.submenu').forEach(menu => {
+                if (menu.id !== menuId) {
+                    menu.classList.remove('active');
+                    const otherArrow = menu.previousElementSibling.querySelector('.arrow');
+                    if (otherArrow) {
+                        otherArrow.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+            
+            // Toggle current submenu
+            submenu.classList.toggle('active');
+            arrow.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
-      };
-      xhr.send(data);
-    }
 
-    function chargerEtudiants() {
-      ajax("GET", "/etudiants", null, (data) => {
-        const tbody = document.querySelector("#table-etudiants tbody");
-        tbody.innerHTML = "";
-        data.forEach(e => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${e.id}</td>
-            <td>${e.nom}</td>
-            <td>${e.prenom}</td>
-            <td>${e.email}</td>
-            <td>${e.age}</td>
-            <td>
-              <button onclick='remplirFormulaire(${JSON.stringify(e)})'>✏️</button>
-              <button onclick='supprimerEtudiant(${e.id})'>🗑️</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-      });
-    }
+        function loadContent(page) {
+            fetch(page)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erreur lors du chargement de la page : " + page);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    document.querySelector('.content').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(error);
+                    document.querySelector('.content').innerHTML = "<p style='color:red;'>Erreur de chargement du contenu.</p>";
+                });
+        }
 
-    function ajouterOuModifier() {
-      const id = document.getElementById("id").value;
-      const nom = document.getElementById("nom").value;
-      const prenom = document.getElementById("prenom").value;
-      const email = document.getElementById("email").value;
-      const age = document.getElementById("age").value;
-
-      const data = `nom=${encodeURIComponent(nom)}&prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}&age=${age}`;
-
-      if (id) {
-        ajax("PUT", `/etudiants/${id}`, data, () => {
-          resetForm();
-          chargerEtudiants();
-        });
-      } else {
-        ajax("POST", "/etudiants", data, () => {
-          resetForm();
-          chargerEtudiants();
-        });
-      }
-    }
-
-    function remplirFormulaire(e) {
-      document.getElementById("id").value = e.id;
-      document.getElementById("nom").value = e.nom;
-      document.getElementById("prenom").value = e.prenom;
-      document.getElementById("email").value = e.email;
-      document.getElementById("age").value = e.age;
-    }
-
-    function supprimerEtudiant(id) {
-      if (confirm("Supprimer cet étudiant ?")) {
-        ajax("DELETE", `/etudiants/${id}`, null, () => {
-          chargerEtudiants();
-        });
-      }
-    }
-    
-    function resetForm() {
-      document.getElementById("id").value = "";
-      document.getElementById("nom").value = "";
-      document.getElementById("prenom").value = "";
-      document.getElementById("email").value = "";
-      document.getElementById("age").value = "";
-    }
-
-    chargerEtudiants();
-  </script>
-
+    </script>
 </body>
 </html>
 <a href=""></a>
