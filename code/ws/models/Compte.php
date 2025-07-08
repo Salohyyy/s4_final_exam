@@ -54,10 +54,10 @@ class Compte {
         $stmt = $db->prepare("DELETE FROM compte WHERE id = ?");
         $stmt->execute([$id]);
     }*/
+    
     public static function getByClient($id_client) {
         $db = getDB();
-        $sql = "SELECT * FROM compte WHERE id_client = ?";
-        $stmt = $db->prepare($sql);
+        $stmt = $db->prepare("SELECT compte.id id,compte.numero numero FROM compte JOIN compte_client ON compte.id=compte_client.id_compte WHERE compte_client.id = ?");
         $stmt->execute([$id_client]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
