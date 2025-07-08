@@ -29,3 +29,18 @@ SELECT
          FROM compte_mouvement cm
          WHERE cm.id_compte_type_mouvement = 3) -- investissement
     ) AS somme_autres_fonds;
+
+    SELECT 
+    YEAR(r.date_remboursement) AS annee,
+    MONTH(r.date_remboursement) AS mois,
+    SUM(r.annuite - r.assurance) AS somme_interets
+FROM 
+    remboursement_pret r
+WHERE 
+    r.date_remboursement BETWEEN '2025-01-01' AND '2025-12-31'
+    AND MONTH(r.date_remboursement) = 6  -- Filtre pour le mois de juin
+GROUP BY 
+    YEAR(r.date_remboursement),
+    MONTH(r.date_remboursement)
+ORDER BY 
+    annee, mois;

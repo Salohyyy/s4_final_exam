@@ -1,0 +1,96 @@
+<div class="content-header">
+    <h1>Exporter l’échéancier PDF</h1>
+  </div>
+  
+  <div id="message" style="color: red; font-weight: bold;"></div>
+  
+  <div>
+    <label>Client :</label>
+    <select id="client-select">
+      <option value="">-- Choisir un client --</option>
+    </select>
+  
+    <label>Prêt :</label>
+    <select id="pret-select">
+      <option value="">-- Choisir un prêt --</option>
+    </select>
+  
+    <button id="btn-export">Exporter PDF</button>
+
+  </div>
+  
+  <script>
+  (() => {
+    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+  
+    function ajax(method, url, data, callback, errorCallback) {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, apiBase + url, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.responseType = "blob";
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          callback(xhr.response);
+        } else {
+          if (errorCallback) errorCallback(xhr.responseText);
+        }
+      };
+      xhr.send(data);
+    }
+  
+    function chargerClients() {
+      fetch(apiBase + "/clients")
+        .then(res => res.json())
+        .then(data => {
+          const select = document.getElementById("client-select");
+          data.forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c.id;
+            opt.textContent = `${c.nom} ${c.prenom}`;
+            select.appendChild(opt);
+          });
+        });
+    }
+  
+    function chargerPrets() {
+      const idClient = document.getElementById("client-select").value;
+      fetch(`${apiBase}/remboursements/prets?id_client=${idClient}`)
+        .then(res => res.json())
+        .then(data => {
+          const select = document.getElementById("pret-select");
+          select.innerHTML = '<option value="">-- Choisir un prêt --</option>';
+          data.forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = `Prêt #${p.id} - Montant: ${p.montant}`;
+            select.appendChild(opt);
+          });
+        });
+    }
+  
+    function exporterPDF() {
+      const idPret = document.getElementById("pret-select").value;
+      if (!idPret) {
+        alert("Veuillez choisir un prêt.");
+        return;
+      }
+  
+      ajax("GET", `/remboursements/pdf?id_pret=${idPret}`, null, (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `echeancier_pret_${idPret}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }, () => {
+        alert("Erreur lors de l'export.");
+      });
+    }
+  
+    document.getElementById("client-select").addEventListener("change", chargerPrets);
+    document.getElementById("btn-export").addEventListener("click", exporterPDF);
+
+    chargerClients();
+  })();
+  </script>
+  
