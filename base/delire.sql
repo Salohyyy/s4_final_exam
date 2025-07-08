@@ -64,7 +64,7 @@ VALUES
 (1, 50.00, 1050.00, '2023-10-05', '2023-10-05', 0.00);   -- Octobre
 
 
-    UPDATE remboursement_pret SET interet = 990 WHERE id = 1;
+UPDATE remboursement_pret SET interet = 990 WHERE id = 1;
 UPDATE remboursement_pret SET interet = 1000 WHERE id = 2;
 UPDATE remboursement_pret SET interet = 970 WHERE id = 3;
 UPDATE remboursement_pret SET interet = 1010 WHERE id = 4;

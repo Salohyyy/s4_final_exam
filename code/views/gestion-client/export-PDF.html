@@ -1,24 +1,43 @@
 <div class="content-header">
-    <h1>Exporter l’échéancier PDF</h1>
-  </div>
-  
-  <div id="message" style="color: red; font-weight: bold;"></div>
-  
-  <div>
-    <label>Client :</label>
-    <select id="client-select">
-      <option value="">-- Choisir un client --</option>
-    </select>
-  
-    <label>Prêt :</label>
-    <select id="pret-select">
-      <option value="">-- Choisir un prêt --</option>
-    </select>
-  
-    <button id="btn-export">Exporter PDF</button>
+  <h1><i class="fas fa-file-pdf"></i> Exporter l'échéancier PDF</h1>
+  <p>Générer le plan de remboursement d'un prêt</p>
+</div>
 
+<div class="form">
+  <div class="form-card">
+    <div id="message" class="message-box"></div>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Client :</label>
+          <div class="input-container">
+            <select id="client-select" required>
+              <option value="">-- Sélectionner un client --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-hand-holding-usd"></i> Prêt :</label>
+          <div class="input-container">
+            <select id="pret-select" required>
+              <option value="">-- Sélectionner un prêt --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button id="btn-export" class="btn btn-primary">
+          <i class="fas fa-file-export"></i> Exporter PDF
+        </button>
+      </div>
+    </div>
   </div>
-  
+</div>
   <script>
   (() => {
        if (typeof apiBase === 'undefined') {
