@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/gestion-client/encaisse-decaisse.css">
     <title>Document</title>
 </head>
 <body>
@@ -61,6 +62,7 @@
         </div>
     </div>
 
+    <script src="../static/js/encaisse-decaisse.js"></script>
     <script>
         function toggleSubmenu(menuId) {
             const submenu = document.getElementById(menuId);
@@ -83,22 +85,30 @@
         }
 
         function loadContent(page) {
-            fetch(page)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erreur lors du chargement de la page : " + page);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    document.querySelector('.content').innerHTML = html;
-                })
-                .catch(error => {
-                    console.error(error);
-                    document.querySelector('.content').innerHTML = "<p style='color:red;'>Erreur de chargement du contenu.</p>";
-                });
+          fetch(page)
+            .then(response => {
+              if (!response.ok) throw new Error("Erreur lors du chargement de la page : " + page);
+              return response.text();
+            })
+            .then(html => {
+              document.querySelector('.content').innerHTML = html;
+            
+              // 👉 On attend que le HTML soit chargé pour attacher les événements
+              if (page.includes("encaisse-decaisse.html")) {
+                chargerClients();
+            
+                // on attend que le DOM soit prêt
+                setTimeout(() => {
+                  document.getElementById("client-select")?.addEventListener("change", chargerComptes);
+                  document.querySelector("button.btn.btn-primary")?.addEventListener("click", insererMouvement);
+                }, 100);
+              }
+            })
+            .catch(error => {
+              console.error(error);
+              document.querySelector('.content').innerHTML = "<p style='color:red;'>Erreur de chargement du contenu.</p>";
+            });
         }
-
     </script>
 </body>
 </html>

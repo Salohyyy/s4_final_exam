@@ -1,7 +1,7 @@
 <?php
 function getDBTest() {
     $host = 'localhost';
-    $dbname = 'tp_flight';
+    $dbname = 'ef';
     $username = 'root';
     $password = '';
 

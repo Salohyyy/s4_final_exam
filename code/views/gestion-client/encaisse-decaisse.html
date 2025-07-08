@@ -1,122 +1,65 @@
-<div class="content-header">
-    <h1>Encaissement / Décaissement</h1>
+<div class="form">
+  <div class="form-card">
+    <div class="card-header">
+      <h2><i class="fas fa-exchange-alt"></i> Encaissement / Décaissement</h2>
+      <p>Gérer les mouvements financiers des clients</p>
+    </div>
+
+    <form>
+      <div id="message" class="message-box"></div>
+
+      <div class="form-section">
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Client :</label>
+          <div class="input-container">
+            <select id="client-select" onchange="chargerComptes()" required>
+              <option value="">-- Sélectionner un client --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-wallet"></i> Compte :</label>
+          <div class="input-container">
+            <select id="compte-select" required>
+              <option value="">-- Sélectionner un compte --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-money-bill-wave"></i> Montant :</label>
+          <div class="input-container">
+            <input type="number" id="montant" placeholder="Montant en Ar" required>
+            <span class="input-icon">Ar</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-random"></i> Type de mouvement :</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="mouvement" value="encaissement" required>
+              <span class="radio-custom"></span>
+              <span class="radio-label"><i class="fas fa-arrow-down success-icon"></i> Encaissement</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="mouvement" value="decaissement">
+              <span class="radio-custom"></span>
+              <span class="radio-label"><i class="fas fa-arrow-up danger-icon"></i> Décaissement</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" onclick="insererMouvement()">
+            <i class="fas fa-check-circle"></i> Valider
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
-  
-  <div id="message" style="font-weight: bold;"></div>
-  
-  <div>
-    <label>Client :</label>
-    <select id="client-select" onchange="chargerComptes()">
-      <option value="">-- Sélectionner un client --</option>
-    </select>
-  </div>
-  
-  <div>
-    <label>Compte :</label>
-    <select id="compte-select">
-      <option value="">-- Sélectionner un compte --</option>
-    </select>
-  </div>
-  
-  <div>
-    <label>Montant :</label>
-    <input type="number" id="montant" placeholder="Montant en Ar">
-  </div>
-  
-  <div>
-    <label>Mouvement :</label>
-    <label><input type="radio" name="mouvement" value="encaissement"> Encaissement</label>
-    <label><input type="radio" name="mouvement" value="decaissement"> Décaissement</label>
-  </div>
-  
-  <div>
-    <button onclick="insererMouvement()">Valider</button>
-  </div>
-  
-  <script>
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-    const id_contributeur = 1; // Par exemple, un employé enregistré
-  
-    function ajax(method, url, data, callback, errorCallback) {
-      const xhr = new XMLHttpRequest();
-      xhr.open(method, apiBase + url, true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) callback(JSON.parse(xhr.responseText));
-          else if (errorCallback) errorCallback(xhr.responseText);
-        }
-      };
-      xhr.send(data);
-    }
-  
-    function afficherMessage(message, color = "red") {
-      const msg = document.getElementById("message");
-      msg.style.color = color;
-      msg.textContent = message;
-      setTimeout(() => msg.textContent = "", 4000);
-    }
-  
-    function chargerClients() {
-      ajax("GET", "/clients", null, (data) => {
-        const select = document.getElementById("client-select");
-        data.forEach(client => {
-          const opt = document.createElement("option");
-          opt.value = client.id;
-          opt.textContent = client.nom + " " + client.prenom;
-          select.appendChild(opt);
-        });
-      });
-    }
-  
-    function chargerComptes() {
-      const idClient = document.getElementById("client-select").value;
-      if (!idClient) return;
-  
-      ajax("GET", `/comptes?id_client=${idClient}`, null, (data) => {
-        const select = document.getElementById("compte-select");
-        select.innerHTML = '<option value="">-- Sélectionner un compte --</option>';
-        data.forEach(compte => {
-          const opt = document.createElement("option");
-          opt.value = compte.id;
-          opt.textContent = `Compte #${compte.id} - Solde: ${compte.solde} Ar`;
-          select.appendChild(opt);
-        });
-      });
-    }
-  
-    function insererMouvement() {
-      const idClient = document.getElementById("client-select").value;
-      const idCompte = document.getElementById("compte-select").value;
-      const montant = document.getElementById("montant").value;
-      const typeMouvement = document.querySelector('input[name="mouvement"]:checked');
-  
-      if (!idClient || !idCompte || !montant || !typeMouvement) {
-        afficherMessage("Tous les champs sont obligatoires.");
-        return;
-      }
-  
-      const mouvement = typeMouvement.value; // 'encaissement' ou 'decaissement'
-  
-      // On récupère l'id du type de mouvement (1 = encaissement, 2 = décaissement)
-      const urlType = `/type_mouvement?entree=${mouvement === "encaissement" ? 1 : 0}`;
-      ajax("GET", urlType, null, (typeData) => {
-        const idType = typeData.id;
-        const data = `id_compte_type_mouvement=${idType}&id_compte=${idCompte}&id_contributeur=${id_contributeur}&date_mouvement=${new Date().toISOString().split("T")[0]}&montant=${montant}`;
-  
-        ajax("POST", "/compte_mouvements", data, () => {
-          afficherMessage("Mouvement inséré avec succès ✅", "green");
-          document.getElementById("montant").value = "";
-          document.querySelectorAll('input[name="mouvement"]').forEach(r => r.checked = false);
-        }, () => {
-          afficherMessage("Erreur lors de l'insertion ❌");
-        });
-  
-      }, () => {
-        afficherMessage("Type de mouvement introuvable ❌");
-      });
-    }
-  
-    chargerClients();
-  </script>
+</div>
   

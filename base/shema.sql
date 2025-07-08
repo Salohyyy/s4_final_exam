@@ -52,7 +52,7 @@ CREATE TABLE compte_client (
     id_client INT,
     id_compte INT,
     date DATE,
-    attribution BOOLEAN,
+    attribution BOOLEAN,    
     FOREIGN KEY (id_client) REFERENCES client(id),
     FOREIGN KEY (id_compte) REFERENCES compte(id)
 );

@@ -100,3 +100,9 @@ penalite:
 assurance: 
     pourcentage
     date_modif
+
+            SELECT cm.*, c.numero, ctm.entree
+            FROM compte_mouvement cm
+            JOIN compte c ON cm.id_compte = c.id
+            JOIN compte_type_mouvement ctm ON cm.id_compte_type_mouvement = ctm.id
+            WHERE cm.id_compte = 1
