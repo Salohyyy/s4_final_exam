@@ -20,6 +20,7 @@
                 <div class="menu-title">
                     <i class="fas fa-piggy-bank"></i> Fonds
                 </div>
+
                 <div class="menu-item" onclick="toggleSubmenu('fond-menu')">
                     <i class="fas fa-wallet"></i>
                     <span>gestion des fond</span>
@@ -33,6 +34,7 @@
                         <i class="fas fa-info-circle"></i> detail
                     </div>
                 </div>
+
                 </div>
                 <div class="menu-item" onclick="toggleSubmenu('-menu')">
                     <i class="fas fa-wallet"></i>
@@ -42,6 +44,39 @@
                 <div class="submenu" id="-menu">
                     <div class="submenu-item" onclick="loadContent('')">
                         <i class="fas fa-plus-circle"></i> courbe
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">
+                    <i class="fas fa-piggy-bank"></i> Gestion client
+                </div>
+                <div class="menu-item" onclick="toggleSubmenu('client-menu')">
+                    <i class="fas fa-wallet"></i>
+                    <span>action</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu" id="fond-menu">
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-plus-circle"></i> caisse
+                    </div>
+                </div>
+                </div>
+                <div class="menu-item" onclick="toggleSubmenu('client-menu')">
+                    <i class="fas fa-wallet"></i>
+                    <span>pret</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu" id="-menu">
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-plus-circle"></i> demande pret
+                    </div>
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-plus-circle"></i> remboursement pret
+                    </div>
+                    <div class="submenu-item" onclick="loadContent('')">
+                        <i class="fas fa-plus-circle"></i> pret en attente de validation
                     </div>
                 </div>
             </div>
