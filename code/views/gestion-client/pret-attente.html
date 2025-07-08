@@ -1,28 +1,29 @@
 <div class="content-header">
-    <h1 id="page-title">Liste des prêts à valider</h1>
-  </div>
-  
-  <div id="message" style="color: red; font-weight: bold;"></div>
-  
-  <table id="table-prets" border="1" cellpadding="8">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Client</th>
-        <th>Type</th>
-        <th>Montant</th>
-        <th>Durée</th>
-        <th>Délai</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  
-  <script>
+  <h1 id="page-title">Liste des prêts à valider</h1>
+</div>
+
+<div id="message" style="color: red; font-weight: bold;"></div>
+
+<table id="table-prets" border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Client</th>
+      <th>Type</th>
+      <th>Montant</th>
+      <th>Durée</th>
+      <th>Délai</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  (() => {
     const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-    const id_employe = 1; // À adapter selon l'utilisateur connecté
+    const id_employe = 1; // À remplacer par l'utilisateur connecté
   
     function ajax(method, url, data, callback, errorCallback) {
       const xhr = new XMLHttpRequest();
@@ -46,34 +47,71 @@
         tbody.innerHTML = "";
         data.forEach(pret => {
           const tr = document.createElement("tr");
+  
           tr.innerHTML = `
             <td>${pret.id}</td>
             <td>${pret.client_nom} ${pret.client_prenom}</td>
             <td>${pret.type_description}</td>
             <td>${pret.montant}</td>
-            <td>${pret.duree}</td>
-            <td>${pret.delais}</td>
+            <td>${pret.duree} mois</td>
+            <td>${pret.delais} mois</td>
             <td>${pret.description}</td>
-            <td>
-              <button onclick="changerStatut(${pret.id}, 2)">Valider</button>
-              <button onclick="changerStatut(${pret.id}, 3)">Annuler</button>
-            </td>
           `;
+  
+          // Bouton Valider
+          const validerBtn = document.createElement("a");
+          validerBtn.href = "#";
+          validerBtn.textContent = "✅ Valider";
+          validerBtn.style.color = "green";
+          validerBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            validerPret(pret.id);
+          });
+  
+          // Bouton Refuser
+          const refuserBtn = document.createElement("a");
+          refuserBtn.href = "#";
+          refuserBtn.textContent = "❌ Refuser";
+          refuserBtn.style.color = "red";
+          refuserBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            refuserPret(pret.id);
+          });
+  
+          // Cellule Actions
+          const tdAction = document.createElement("td");
+          tdAction.appendChild(validerBtn);
+          tdAction.appendChild(document.createElement("br"));
+          tdAction.appendChild(refuserBtn);
+          tr.appendChild(tdAction);
+  
           tbody.appendChild(tr);
         });
-      }, (err) => {
+      }, () => {
         afficherMessage("Erreur lors du chargement des prêts.");
       });
     }
   
-    function changerStatut(idPret, idStatut) {
-      const data = `id_pret=${idPret}&id_pret_statut=${idStatut}&id_employe=${id_employe}&date_etat=${new Date().toISOString().split("T")[0]}`;
-  
-      ajax("POST", "/pret_etats", data, () => {
-        afficherMessage("Opération réussie ✅", "green");
+    function validerPret(idPret) {
+      const data = `id_pret=${idPret}&id_employe=${id_employe}&date_etat=${new Date().toISOString().split("T")[0]}`;
+      ajax("POST", "/pret_etats/valider", data, () => {
+        afficherMessage("✅ Prêt validé avec succès !", "green");
         chargerPretsNonValides();
-      }, (err) => {
-        afficherMessage("Erreur lors de la mise à jour du prêt ❌");
+      }, () => {
+        afficherMessage("❌ Erreur lors de la validation du prêt.");
+      });
+    }
+  
+    function refuserPret(idPret) {
+      const confirmation = confirm("Voulez-vous vraiment refuser ce prêt ?");
+      if (!confirmation) return;
+  
+      const data = `id_pret=${idPret}&id_employe=${id_employe}&date_etat=${new Date().toISOString().split("T")[0]}`;
+      ajax("POST", "/pret_etats/refuser", data, () => {
+        afficherMessage("🚫 Prêt refusé.", "orange");
+        chargerPretsNonValides();
+      }, () => {
+        afficherMessage("❌ Erreur lors du refus du prêt.");
       });
     }
   
@@ -84,6 +122,8 @@
       setTimeout(() => msgBox.textContent = "", 4000);
     }
   
+    // Lancement initial
     chargerPretsNonValides();
+  })();
   </script>
   

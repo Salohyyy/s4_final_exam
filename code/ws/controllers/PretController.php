@@ -3,6 +3,11 @@ require_once __DIR__ . '/../models/Pret.php';
 require_once __DIR__ . '/../models/PretEtat.php';
 
 class PretController {
+    public static function getNonValides() {
+        $prets = Pret::getPretsNonValides();
+        Flight::json($prets);
+    }
+    
     public static function create() {
         $data = Flight::request()->data;
 
