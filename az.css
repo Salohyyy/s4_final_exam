@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste des fonds</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f0f2f5;
+      transition: background-color 0.3s ease;
+      padding-bottom: 80px;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%); /* Bleu de Bred */
+      color: white;
+      padding: 80px 20px 20px; /* Augmenté le padding-top pour descendre le contenu */
+      position: fixed;
+      top: 0;
+      left: -280px;
+      height: 100vh;
+      transition: left 0.3s ease;
+      z-index: 10;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar h2 {
+      font-size: 1.5em;
+      margin-bottom: 30px;
+      color: #ffffff;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: -20px; /* Ajustement pour descendre le titre */
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar ul li:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+    }
+
+    .sidebar ul li::before {
+      content: "→";
+      margin-right: 10px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .sidebar ul li:hover::before {
+      opacity: 1;
+    }
+
+    .menu-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 20;
+      cursor: pointer;
+      background: #1976d2; /* Bleu de Bred */
+      color: white;
+      border: none;
+      padding: 12px 15px;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .menu-toggle:hover {
+      background-color: #1565c0; /* Bleu de Bred plus foncé */
+      transform: scale(1.1);
+    }
+
+    .content {
+      flex: 1;
+      margin-left: 0;
+      padding: 80px 40px 40px;
+      width: 100%;
+      transition: margin-left 0.3s ease;
+    }
+
+    .sidebar.active ~ .content {
+      margin-left: 280px;
+    }
+
+    h1 {
+      color: #0d47a1; /* Bleu de Bred */
+      margin-bottom: 30px;
+      font-weight: 500;
+      position: relative;
+    }
+
+    h1::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #1976d2; /* Bleu de Bred */
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      max-width: 600px;
+      margin: 0 auto;
+      transition: transform 0.3s ease;
+    }
+
+    .form-container:hover {
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #0d47a1; /* Bleu de Bred */
+      font-weight: 500;
+    }
+
+    .form-group .tooltip {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: #0d47a1; /* Bleu de Bred */
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      font-size: 12px;
+      cursor: help;
+    }
+
+    .form-group .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: #0d47a1; /* Bleu de Bred */
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .form-group .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #0d47a1 transparent transparent transparent; /* Bleu de Bred */
+    }
+
+    .form-group .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .form-container select,
+    .form-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 5px 0;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      transition: all 0.3s ease;
+      font-size: 15px;
+      background-color: #f9f9f9;
+    }
+
+    .form-container select:focus,
+    .form-container input:focus {
+      border-color: #1976d2; /* Bleu de Bred */
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+      outline: none;
+      background-color: #fff;
+    }
+
+    .form-container select:hover,
+    .form-container input:hover {
+      border-color: #1976d2; /* Bleu de Bred */
+      background-color: #fff;
+    }
+
+    .form-container button {
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%); /* Bleu de Bred */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      font-weight: 500;
+      margin-top: 10px;
+      width: 100%;
+      box-shadow: 0 2px 5px rgba(13, 71, 161, 0.2);
+    }
+
+    .form-container button:hover {
+      background: linear-gradient(135deg, #1565c0 0%, #1e88e5 100%); /* Bleu de Bred plus clair */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(13, 71, 161, 0.3);
+    }
+
+    .form-container button:active {
+      transform: translateY(0);
+    }
+
+    footer {
+      width: 100%;
+      background-color: #0d47a1; /* Bleu de Bred */
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 5;
+      font-size: 14px;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        padding: 80px 20px 40px;
+      }
+      
+      .sidebar.active ~ .content {
+        margin-left: 0;
+        filter: brightness(0.7);
+        pointer-events: none;
+      }
+    }
+  </style>
+</head>
+<body class="admin">
+  <button class="menu-toggle" onclick="toggleSidebar()">
+    &#9776;
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Tableau de bord</h2>
+    <ul>
+      <li>Accueil</li>
+      <li>Fonds</li>
+      <li>Utilisateurs</li>
+      <li>Paramètres</li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <h1>Liste des fonds</h1>
+    <div class="form-container">
+      <input type="hidden" id="id">
+
+      <div class="form-group">
+        <label for="contributeur">Contributeur :</label>
+        <div class="tooltip">?
+          <span class="tooltip-text">Sélectionnez le contributeur concerné par cette opération</span>
+        </div>
+        <select name="contributeur" id="contributeur"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="compte">Compte :</label>
+        <div class="tooltip">?
+          <span class="tooltip-text">Choisissez le type de compte à utiliser pour cette transaction</span>
+        </div>
+        <select name="compte" id="compte"></select>
+      </div>
+
+      <div class="form-group">
+        <label for="montant">Montant :</label>
+        <div class="tooltip">?
+          <span class="tooltip-text">Entrez le montant numérique sans symboles (ex: 100000)</span>
+        </div>
+        <input type="number" id="montant" placeholder="Montant en Ariary">
+      </div>
+
+      <button onclick="ajouterOuModifier()">Ajouter</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Établissement Financier Malagasy - Tous droits réservés.</p>
+    <p>Adresse : Lot II F 45 Andoharanofotsy, Antananarivo, Madagascar | Téléphone : +261 34 00 000 00 | Email : contact@etabfinance.mg</p>
+  </footer>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    function ajouterOuModifier() {
+      const id = document.getElementById('id').value;
+      const contributeur = document.getElementById('contributeur').value;
+      const compte = document.getElementById('compte').value;
+      const montant = document.getElementById('montant').value;
+
+      if (!contributeur || !compte || !montant) {
+        showAlert("Veuillez remplir tous les champs.", "error");
+        return;
+      }
+
+      console.log("ID:", id);
+      console.log("Contributeur:", contributeur);
+      console.log("Compte:", compte);
+      console.log("Montant:", montant);
+
+      showAlert(id ? "Modification effectuée avec succès" : "Ajout effectué avec succès", "success");
+      
+      if (!id) {
+        document.getElementById('montant').value = '';
+      }
+    }
+
+    function showAlert(message, type) {
+      const alert = document.createElement('div');
+      alert.style.position = 'fixed';
+      alert.style.top = '20px';
+      alert.style.right = '20px';
+      alert.style.padding = '15px 25px';
+      alert.style.borderRadius = '5px';
+      alert.style.color = 'white';
+      alert.style.zIndex = '1000';
+      alert.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+      alert.style.animation = 'fadeIn 0.3s ease-in-out';
+      
+      if (type === 'error') {
+        alert.style.backgroundColor = '#e74c3c';
+      } else {
+        alert.style.backgroundColor = '#2ecc71';
+      }
+      
+      alert.textContent = message;
+      document.body.appendChild(alert);
+      
+      setTimeout(() => {
+        alert.style.animation = 'fadeOut 0.3s ease-in-out';
+        setTimeout(() => {
+          document.body.removeChild(alert);
+        }, 300);
+      }, 3000);
+    }
+
+    window.onload = () => {
+      const contributeurs = ['Rakoto Jean', 'Rabe Claire', 'Ando Fanja'];
+      const comptes = ['Compte Courant', 'Compte Épargne', 'Compte Investissement'];
+
+      const contribSelect = document.getElementById('contributeur');
+      const compteSelect = document.getElementById('compte');
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = '-- Sélectionnez un contributeur --';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      contribSelect.appendChild(defaultOption);
+
+      contributeurs.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.innerText = c;
+        contribSelect.appendChild(opt);
+      });
+
+      const defaultOption2 = document.createElement('option');
+      defaultOption2.value = '';
+      defaultOption2.textContent = '-- Sélectionnez un compte --';
+      defaultOption2.disabled = true;
+      defaultOption2.selected = true;
+      compteSelect.appendChild(defaultOption2);
+
+      comptes.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.innerText = c;
+        compteSelect.appendChild(opt);
+      });
+
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+          from { opacity: 1; transform: translateY(0); }
+          to { opacity: 0; transform: translateY(-20px); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  </script>
+</body>
+</html>
