@@ -19,3 +19,5 @@ Flight::route('POST /remboursements/valider', ['RemboursementController', 'valid
 
 Flight::route('GET /remboursements/pdf', ['RemboursementController', 'exporterPDF']);
 Flight::route('GET /remboursements/prets', ['RemboursementController', 'getPretsClient']);
+
+Flight::route('GET /disponibilite', ['DisponibiliteController', 'calculerDisponibilite']);
