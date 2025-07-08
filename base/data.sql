@@ -62,3 +62,4 @@ INSERT INTO compte_seuil (pourcentage, date_modif) VALUES (10., '2024-01-01');
 INSERT INTO tva (taux, date_modif) VALUES (20.0, '2024-01-01');
 INSERT INTO penalite (pourcentage, date_modif) VALUES (1.0, '2024-01-01');
 INSERT INTO assurance (pourcentage, date_modif) VALUES (1.0, '2024-01-01');
+INSERT INTO delais_max (date_modif) VALUES ('2024-01-01');

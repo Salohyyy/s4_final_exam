@@ -50,18 +50,10 @@
                         <i class="fas fa-plus-circle"></i> encaisse/decaisse
                     </div>
                 </div>
-
-                <div class="menu-title">
-                    <i class="fas fa-piggy-bank"></i> Fond
-                </div>
-
-                <div class="menu-item" onclick="loadContent('fond/form.html')">
-                    <i class="fas fa-wallet"></i>
-                    <span>ajouter</span>
-                    <i class="fas fa-chevron-down arrow"></i>
-                </div>
                 
             </div>
+
+
         </div>
 
         <div class="content">
@@ -70,7 +62,7 @@
     </div>
 
     <script>
-    
+        
         function toggleSubmenu(menuId) {
             const submenu = document.getElementById(menuId);
             const arrow = submenu.previousElementSibling.querySelector('.arrow');
