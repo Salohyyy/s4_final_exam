@@ -128,6 +128,7 @@ CREATE TABLE pret_etat (
 CREATE TABLE remboursement_pret (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_pret INT,
+    assurance DECIMAL(15,2),
     amortissement DECIMAL(15,2),
     date_prevue DATE,
     interet DECIMAL(10,2),
@@ -139,7 +140,14 @@ CREATE TABLE remboursement_pret (
 -- SEUIL, TVA, PENALITE
 CREATE TABLE compte_seuil (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    pourcentage DECIMAL(5,2)
+    pourcentage DECIMAL(5,2),
+    date_modif DATE
+);
+
+CREATE TABLE assurance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pourcentage DECIMAL(5,2),
+    date_modif DATE
 );
 
 CREATE TABLE tva (
@@ -150,5 +158,6 @@ CREATE TABLE tva (
 
 CREATE TABLE penalite (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    pourcentage DECIMAL(5,2)
+    pourcentage DECIMAL(5,2),
+    date_modif DATE
 );

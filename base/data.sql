@@ -58,6 +58,6 @@ INSERT INTO pret_etat (id_pret, id_pret_statut, date_etat, id_employe) VALUES
 (2, 2, '2024-05-10', 2);
 
 -- AUTRES
-INSERT INTO compte_seuil (pourcentage) VALUES (10.0);
+INSERT INTO compte_seuil (pourcentage, date_modif) VALUES (10., '2024-01-01');
 INSERT INTO tva (taux, date_modif) VALUES (20.0, '2024-01-01');
-INSERT INTO penalite (pourcentage) VALUES (1.0);
+INSERT INTO penalite (pourcentage, date_modif) VALUES (1.0, '2024-01-01');
