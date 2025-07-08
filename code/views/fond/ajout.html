@@ -18,13 +18,13 @@
 
   <div>
     <input type="hidden" id="id">
-    <select name="contributeur" id="contributeur" aria-placeholder="Contributeur">
+    <select id="contributeur" >
 
     </select>
-    <select name="compte" id="compte" aria-placeholder="Compte">
+    <select id="compte" >
 
     </select>
-    <input type="date" name="date" id="date">
+    <input type="date" id="date">
     <input type="number" id="montant" placeholder="Montant">
     <button onclick="ajouterFond()">Ajouter</button>
   </div>
@@ -54,16 +54,37 @@
       xhr.send(data);
     }
 
+    function chargerEtudiants() {
+      ajax("GET", "/compteMouvement/investissement", null, (data) => {
+        const tbody = document.querySelector("#table-etudiants tbody");
+        tbody.innerHTML = "";
+        data.forEach(cm => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${cm.id_compte_type_mouvement}</td>
+            <td>${cm.id_compte}</td>
+            <td>${cm.id_contributeur}</td>
+            <td>${cm.date_mouvement}</td>
+            <td>${cm.montant}</td>
+            <td>
+              <button onclick='remplirFormulaire(${JSON.stringify(e)})'>✏️</button>
+              <button onclick='supprimerEtudiant(${e.id})'>🗑️</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+    }
+
     function chargerContributeur() {
       ajax("GET", "/contributeur", null, (data) => {
         const select = document.getElementById("contributeur");
         select.innerHTML = "";
         data.forEach(contributeur => {
-          const opt = document.createElement("option");
-          opt.innerHTML = `
-            <option value='${contributeur.id}'>${contributeur.libelle}</option>
-          `;
-          select.appendChild(opt);
+            const option = document.createElement("option");
+            option.value = contributeur.id;
+            option.textContent = contributeur.libelle;
+            select.appendChild(option);
         });
       });
     }
@@ -73,31 +94,22 @@
         const select = document.getElementById("compte");
         select.innerHTML = "";
         data.forEach(compte => {
-          const opt = document.createElement("option");
-          opt.innerHTML = `
-            <option value='${compte.id}'>${compte.numero}</option>
-          `;
-          select.appendChild(opt);
+            const option = document.createElement("option");
+            option.value = compte.id;
+            option.textContent = compte.numero;
+            select.appendChild(option);
         });
       });
     }
-
-    function getIdDecaissement() {
-      decaissement=2;
-      ajax("GET", `/compteTypeMouvement/entree/institutionnelle/${decaissement}`, null, (data) => {
-        var id_compte_type_mouvement=data.id;
-      });
-    }
-
-    
 
     function ajouterFond() {
       const contributeur = document.getElementById("contributeur").value;
       const compte = document.getElementById("compte").value;
       const montant = document.getElementById("montant").value;
-      const date = document.getElementById("date").value;
-      const id_compte_type_mouvement=getIdDecaissement();
-      const data = `&id_compte_type_mouvement=${encodeURIComponent(id_compte_type_mouvement)}&id_compte=${encodeURIComponent(compte)}id_contributeur=${encodeURIComponent(contributeur)}&date_mouvement=${encodeURIComponent(date)}&montant=${encodeURIComponent(montant)}`;
+      const date_mouvement = document.getElementById("date").value;
+      const id_compte_type_mouvement=3;
+      console.log(contributeur,compte,montant,date_mouvement);
+      const data = `id_compte_type_mouvement=${encodeURIComponent(id_compte_type_mouvement)}&id_compte=${encodeURIComponent(compte)}&id_contributeur=${encodeURIComponent(contributeur)}&date_mouvement=${encodeURIComponent(date_mouvement)}&montant=${encodeURIComponent(montant)}`;
 
       /*if (id) {
         ajax("PUT", `/fond/${id}`, data, () => {

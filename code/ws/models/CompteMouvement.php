@@ -17,7 +17,7 @@ class CompteMouvement {
 
     public static function create($data) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO compte_mouvement (id_compte_type_mouvement,id_compte,id_contributeur,date_mouvement,montant) VALUES (?, ?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO compte_mouvement (id_compte_type_mouvement,id_compte,id_contributeur,date_mouvement,montant) VALUES (?, ?, ?, ?,?)");
         $stmt->execute([
             $data->id_compte_type_mouvement,
             $data->id_compte,
@@ -30,7 +30,7 @@ class CompteMouvement {
     //pas necessaire mais peut servir
     /*public static function update($id, $data) {
         $db = getDB();
-        $stmt = $db->prepare("UPDATE compte_mouvement SET nom = ?, prenom = ?, email = ?, age = ? WHERE id = ?");
+        $stmt = $db->prepare("UPDATE compte_mouvement SET id_compte_type_mouvement = ?, id_compte = ?, id_contributeur = ?, date_mouvement = ?, montant=? WHERE id = ?");
         $stmt->execute([
             $data->id_compte_type_mouvement,
             $data->id_compte,

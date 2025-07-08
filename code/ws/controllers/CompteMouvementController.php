@@ -17,7 +17,7 @@ class CompteMouvementController {
 
     public static function create() {
         $data = Flight::request()->data;
-        $data->date = Utils::formatDate($data->date);
+        //$data->date_mouvement = Utils::formatDate($data->date_mouvement);
         $id_compte = CompteMouvement::create($data);
         Flight::json(['message' => 'CompteMouvement ajouté', 'id_compte' => $id_compte]);
     }
