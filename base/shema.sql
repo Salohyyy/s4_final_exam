@@ -94,7 +94,6 @@ CREATE TABLE pret_caracteristique (
     duree_max INT,
     taux_interet DECIMAL(5,2),
     date_modif DATE,
-    remboursement_par_an BOOLEAN,
     FOREIGN KEY (id_pret_type) REFERENCES pret_type(id)
 );
 

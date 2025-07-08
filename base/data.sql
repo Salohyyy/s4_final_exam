@@ -43,9 +43,9 @@ INSERT INTO pret_type (description, but) VALUES
 ('Crédit consommation', 'Achat de biens personnels'),
 ('Crédit immobilier', 'Acquisition de logement');
 
-INSERT INTO pret_caracteristique (id_pret_type, montant_min, montant_max, duree_min, duree_max, taux_interet, date_modif, remboursement_par_an) VALUES
-(1, 50000, 1000000, 6, 36, 5.5, '2024-01-01', TRUE),
-(2, 1000000, 5000000, 12, 60, 4.0, '2024-01-01', FALSE);
+INSERT INTO pret_caracteristique (id_pret_type, montant_min, montant_max, duree_min, duree_max, taux_interet, date_modif) VALUES
+(1, 50000, 1000000, 6, 36, 5.5, '2024-01-01'),
+(2, 1000000, 5000000, 12, 60, 4.0, '2024-01-01');
 
 INSERT INTO pret (id_pret_type, id_client, montant, duree, description) VALUES
 (1, 1, 200000, 12, 'Achat moto'),
