@@ -15,7 +15,7 @@ class CourbeInteret {
         WHERE date_remboursement BETWEEN ? AND ?
         GROUP BY annee, mois, nom_mois
         ORDER BY annee, mois");
-        $stmt=$stmt->query($date_deb,$date_fin);
+        $stmt->execute([$date_deb, $date_fin]); 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -16,7 +16,10 @@ class CourbeInteretController {
             $mois[] = $row['nom_mois'];
             $interets[] = (float)$row['total_interets'];
         }
-        Flight::json($mois,$interets);
+        Flight::json([
+            "mois" => $mois,
+            "interets" => $interets
+        ]);
     }
 
 }

@@ -1,71 +1,135 @@
-<script src="../../static/js/plotly-latest.min.js"></script>
-<h1>Tableau de Bord Analytique</h1>
-<p>Statistiques et indicateurs clés de performance</p>
-    <input type="date" name="" id="date_deb">
-    <input type="date" name="" id="date_fin">
-    <button type="submit" onclick="getInteret()">Afficher</button>
-
-    <script>
-        if (typeof apiBase === 'undefined') {
-            var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-        }
-        console.log("JavaScript chargé");
-  
-        function ajax(method, url, data, callback) {
-          const xhr = new XMLHttpRequest();
-          xhr.open(method, apiBase + url, true);
-          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-          xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              callback(JSON.parse(xhr.responseText));
-            }
-          };
-          xhr.send(data);
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord Analytique</title>
+    <script src="../../static/js/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f0f2f5;
         }
 
-        function getInteret() {
-    const date_deb = document.getElementById("date_deb").value;
-    const date_fin = document.getElementById("date_fin").value;
+        .dashboard-container {
+            max-width: 900px;
+            margin: auto;
+        }
 
-    if (!date_deb || !date_fin) {
-        alert("Veuillez remplir tous les champs");
-        return;
+        .dashboard-header {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+        }
+
+        #graph {
+            height: 400px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        input[type="date"] {
+            padding: 6px;
+            margin: 10px 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <h1><i class="fas fa-chart-line"></i> Tableau de Bord Analytique</h1>
+        <p>Statistiques et indicateurs clés de performance</p>
+        <input type="date" id="date_deb">
+        <input type="date" id="date_fin">
+        <button onclick="getInteret()">Afficher</button>
+    </header>
+
+    <!-- Le conteneur du graphique -->
+    <div id="graph"></div>
+</div>
+
+<script>
+    if (typeof apiBase === 'undefined') {
+        var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
     }
 
-    const data = `date_deb=${encodeURIComponent(date_deb)}&date_fin=${encodeURIComponent(date_fin)}`;
-
-    ajax("POST", "/courbe", data, (response) => {
-        const mois = response[0];
-        const interets = response[1];
-
-        // Affichage du graphique avec Plotly
-        Plotly.newPlot("graph", [{
-            x: mois,
-            y: interets,
-            type: "scatter",
-            mode: "lines+markers",
-            name: "Intérêts",
-            line: {
-                color: "#52b788",
-                width: 3,
-                shape: "spline"
-            },
-            marker: {
-                size: 8,
-                color: "#52b788"
+    function ajax(method, url, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, apiBase + url, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                callback(JSON.parse(xhr.responseText));
             }
-        }], {
-            xaxis: { title: "Mois" },
-            yaxis: { title: "Intérêts (Ar)" },
-            legend: { orientation: "h", y: -0.2 },
-            margin: { t: 30, b: 80, l: 50, r: 30 },
-            plot_bgcolor: "#ffffff",
-            paper_bgcolor: "#ffffff",
-            font: { color: "#2c3e50" }
+        };
+        xhr.send(data);
+    }
+
+    function getInteret() {
+        const date_deb = document.getElementById("date_deb").value;
+        const date_fin = document.getElementById("date_fin").value;
+
+        if (!date_deb || !date_fin) {
+            alert("Veuillez remplir tous les champs");
+            return;
+        }
+
+        const data = `date_deb=${encodeURIComponent(date_deb)}&date_fin=${encodeURIComponent(date_fin)}`;
+
+        ajax("POST", "/courbe", data, (response) => {
+            const mois = response.mois;
+            const interets = response.interets;
+
+            const graph = [{
+                x: mois,
+                y: interets,
+                type: 'scatter',
+                mode: 'lines+markers',
+                name: 'Intérêts mensuels',
+                line: {
+                    color: '#52b788',
+                    width: 3,
+                    shape: 'spline'
+                },
+                marker: {
+                    size: 8,
+                    color: '#52b788'
+                }
+            }];
+
+            const layout = {
+                title: "Évolution des intérêts par mois",
+                plot_bgcolor: '#ffffff',
+                paper_bgcolor: '#ffffff',
+                font: { color: '#2c3e50' },
+                xaxis: { title: 'Mois', gridcolor: '#e0e0e0' },
+                yaxis: { title: 'Intérêts (Ar)', gridcolor: '#e0e0e0' },
+                legend: { orientation: 'h', y: -0.2 },
+                margin: { t: 30, b: 80, l: 50, r: 30 }
+            };
+
+            Plotly.newPlot('graph', graph, layout, {responsive: true});
         });
-    });
-}
+    }
+</script>
 
-
-        
-    </script>
+</body>
+</html>
