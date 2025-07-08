@@ -47,7 +47,9 @@
 </div>
 
 <script>
-    ()=>{const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
     //const apiBase = "http://localhost:8888/code/ws";
     
     function getParamURL(name) {
@@ -166,5 +168,5 @@
         document.getElementById("formCaracteristiques").style.display = "block";
         chargerPretTypes(pretTypeId);
       }
-    };}
+    }
 </script>

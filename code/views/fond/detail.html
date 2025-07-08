@@ -64,7 +64,9 @@
   </div>
 
   <script>
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+  if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
     //const apiBase = "http://localhost:8888/code/ws"; // Adaptez cette URL selon votre configuration
 
     function ajax(method, url, data, callback) {
