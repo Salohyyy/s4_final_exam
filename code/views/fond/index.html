@@ -72,8 +72,8 @@
       });
     }
 
-    function chargerContributeur() {
-      ajax("GET", "/contributeur", null, (data) => {
+    function chargerContributeurInstitutionelle() {
+      ajax("GET", "/contributeur/institutionelle", null, (data) => {
         const select = document.getElementById("contributeur");
         select.innerHTML = "";
         data.forEach(contributeur => {
@@ -98,6 +98,12 @@
       });
     }
 
+    function getCompteTypeMouvementByDescription(description) {
+      ajax("GET", `/compteTypeMouvement/${description}`, null, (data) => {
+        
+      });
+    }
+
     function ajouterFond() {
       const contributeur = document.getElementById("contributeur").value;
       const compte = document.getElementById("compte").value;
@@ -110,14 +116,14 @@
       /*if (id) {
         ajax("PUT", `/fond/${id}`, data, () => {
           resetForm();
-          chargerContributeur();
+          chargerContributeurInstitutionelle();
           chargerCompteInstitutionnelle();
           chargerMouvementInvestissement();
         });
       } else {*/
         ajax("POST", "/compteMouvement", data, () => {
           resetForm();
-          chargerContributeur();
+          chargerContributeurInstitutionelle();
           chargerCompteInstitutionnelle();
           chargerMouvementInvestissement();
         });
@@ -138,7 +144,7 @@
     }
 
    
-    chargerContributeur();
+    chargerContributeurInstitutionelle();
     chargerCompteInstitutionnelle();
     chargerMouvementInvestissement();
   </script>

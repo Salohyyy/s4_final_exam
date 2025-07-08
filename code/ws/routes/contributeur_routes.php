@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../controllers/ContributeurController.php';
 
 Flight::route('GET /contributeur', ['ContributeurController', 'getAll']);
+Flight::route('GET /contributeur/institutionelle', ['ContributeurController', 'getContributeurInstitutionelle']);
 Flight::route('GET /contributeur/id/@id', ['ContributeurController', 'getById']);
 Flight::route('GET /contributeur/libelle/@libelle', ['ContributeurController', 'getByLibelle']);
 Flight::route('POST /contributeur', ['ContributeurController', 'create']);

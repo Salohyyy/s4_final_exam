@@ -15,6 +15,7 @@ class CompteMouvementController {
         Flight::json($compteMouvement);
     }
 
+
     public static function getInvestissement() {
         $compteMouvements = CompteMouvement::getInvestissement();
         Flight::json($compteMouvements);
