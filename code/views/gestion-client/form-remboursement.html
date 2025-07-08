@@ -1,37 +1,87 @@
 <div class="content-header">
-  <h1 id="page-title">Validation d’un remboursement</h1>
+  <h1><i class="fas fa-file-invoice-dollar"></i> Validation d'un remboursement</h1>
+  <p>Gestion des remboursements de prêts clients</p>
 </div>
 
-<div id="message" style="color: red; font-weight: bold;"></div>
+<div class="form">
+  <div class="form-card">
+    <div id="message" class="message-box"></div>
 
-<div style="margin-bottom: 20px;">
-  <label>Client :</label>
-  <select id="client-select">
-    <option value="">-- Choisir un client --</option>
-  </select>
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fas fa-user-tie"></i> Client :</label>
+          <div class="input-container">
+            <select id="client-select" required>
+              <option value="">-- Sélectionner un client --</option>
+            </select>
+            <i class="fas fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
 
-  <label>Date prévue :</label>
-  <input type="date" id="date-prevue" />
+        <div class="form-group">
+          <label><i class="fas fa-calendar-check"></i> Date prévue :</label>
+          <div class="input-container">
+            <input type="date" id="date-prevue" required>
+          </div>
+        </div>
 
-  <button id="chercher-btn">🔍 Chercher les prêts</button>
-</div>
+        <div class="form-group form-group-btn">
+          <button id="chercher-btn" class="btn btn-secondary">
+            <i class="fas fa-search"></i> Chercher
+          </button>
+        </div>
+      </div>
 
-<div style="margin-top: 10px;">
-  <label>Prêt :</label>
-  <select id="pret-select">
-    <option value="">-- Choisir un prêt --</option>
-  </select>
-</div>
+      <div class="form-group">
+        <label><i class="fas fa-hand-holding-usd"></i> Prêt :</label>
+        <div class="input-container">
+          <select id="pret-select" required>
+            <option value="">-- Sélectionner un prêt --</option>
+          </select>
+          <i class="fas fa-chevron-down select-arrow"></i>
+        </div>
+      </div>
 
-<div id="details" style="display: none; margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
-  <p><strong>Assurance :</strong> <span id="assurance"></span></p>
-  <p><strong>Amortissement :</strong> <span id="amortissement"></span></p>
-  <p><strong>Intérêt :</strong> <span id="interet"></span></p>
-  <p><strong>Pénalité :</strong> <span id="penalite"></span></p>
-  <p><strong>Date prévue :</strong> <span id="datePrevueAff"></span></p>
-  <h3><strong>Total à payer :</strong> <span id="total"></span></h3>
+      <div id="details" class="details-container">
+        <h3><i class="fas fa-receipt"></i> Détails du remboursement</h3>
+        
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Assurance :</span>
+            <span id="assurance" class="detail-value"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Amortissement :</span>
+            <span id="amortissement" class="detail-value"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Intérêt :</span>
+            <span id="interet" class="detail-value"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Pénalité :</span>
+            <span id="penalite" class="detail-value"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Date prévue :</span>
+            <span id="datePrevueAff" class="detail-value"></span>
+          </div>
+        </div>
 
-  <button id="valider-btn">💰 Valider le remboursement</button>
+        <div class="total-container">
+          <h4>Total à payer :</h4>
+          <span id="total" class="total-amount"></span>
+        </div>
+
+        <div class="form-actions">
+          <button id="valider-btn" class="btn btn-primary">
+            <i class="fas fa-check-circle"></i> Valider le remboursement
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>

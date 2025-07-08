@@ -1,24 +1,27 @@
 <div class="content-header">
-  <h1 id="page-title">Liste des prêts à valider</h1>
+  <h1><i class="fas fa-clock"></i> Prêts en attente de validation</h1>
+  <p>Liste des demandes de prêt à valider</p>
 </div>
 
-<div id="message" style="color: red; font-weight: bold;"></div>
+    <div id="message" class="message-box"></div>
 
-<table id="table-prets" border="1" cellpadding="8">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Client</th>
-      <th>Type</th>
-      <th>Montant</th>
-      <th>Durée</th>
-      <th>Délai</th>
-      <th>Description</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    <div class="table-container">
+      <table id="table-prets" class="styled-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-hashtag"></i> ID</th>
+            <th><i class="fas fa-user"></i> Client</th>
+            <th><i class="fas fa-tag"></i> Type</th>
+            <th><i class="fas fa-money-bill-wave"></i> Montant</th>
+            <th><i class="fas fa-calendar-alt"></i> Durée</th>
+            <th><i class="fas fa-clock"></i> Délai</th>
+            <th><i class="fas fa-align-left"></i> Description</th>
+            <th><i class="fas fa-cogs"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
 <script>
   (() => {
