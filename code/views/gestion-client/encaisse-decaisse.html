@@ -34,7 +34,8 @@
   </div>
   
   <script>
-    if (typeof apiBase === 'undefined') {
+    (() => {
+       if (typeof apiBase === 'undefined') {
   var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
 }
     const id_contributeur = 1; // Par exemple, un employé enregistré
@@ -120,6 +121,6 @@
       });
     }
   
-    chargerClients();
+    chargerClients();})
   </script>
   

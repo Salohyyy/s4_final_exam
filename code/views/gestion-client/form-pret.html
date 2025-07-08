@@ -24,7 +24,9 @@
   </div>
   
   <script>
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+       if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
     console.log("JavaScript chargé");
     function ajax(method, url, data, callback) {
       const xhr = new XMLHttpRequest();

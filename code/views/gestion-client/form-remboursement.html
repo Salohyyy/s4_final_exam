@@ -37,8 +37,9 @@
 
 <script>
 (() => {
-  const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
-
+  if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
   function ajax(method, url, data, callback, errorCallback) {
     const xhr = new XMLHttpRequest();
     xhr.open(method, apiBase + url, true);

@@ -22,7 +22,9 @@
 
 <script>
   (() => {
-    const apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+    if (typeof apiBase === 'undefined') {
+  var apiBase = "http://localhost/S4/s4_final_exam/code/ws";
+}
     const id_employe = 1; // À remplacer par l'utilisateur connecté
   
     function ajax(method, url, data, callback, errorCallback) {
